@@ -1,20 +1,17 @@
 fileFormatVersion: 2
-guid: 7a1cb6f22de488d4a96ca60beadd571b
+guid: 50f7174f62b7b2f44b58879c1ded2882
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 16
-  forceTextureCase: -2
+  fontSize: 200
+  forceTextureCase: -1
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
   fontName: Dosis
   fontNames:
   - Dosis
-  fallbackFontReferences:
-  - {fileID: 12800000, guid: b18a6b34a9afc024fb019aa31ce8bb5d, type: 3}
-  - {fileID: 12800000, guid: 1926793c22e91814cb449f10d83aa933, type: 3}
-  - {fileID: 12800000, guid: 403b1d7dafaeb8b46a6341f34154c828, type: 3}
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

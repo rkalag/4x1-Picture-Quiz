@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b18a6b34a9afc024fb019aa31ce8bb5d
+guid: df796df536de81542bcbd7a7c959f8a1
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -12,7 +12,11 @@ TrueTypeFontImporter:
   fontNames:
   - Dosis
   fallbackFontReferences:
-  - {fileID: 12800000, guid: 403b1d7dafaeb8b46a6341f34154c828, type: 3}
+  - {fileID: 12800000, guid: 5a5a7fc0314157740ad9135ec823fab1, type: 3}
+  - {fileID: 12800000, guid: 28890f62d958b224888bc802608a5f47, type: 3}
+  - {fileID: 12800000, guid: 99cb1c34ee51cb74b8270d64ec276ba3, type: 3}
+  - {fileID: 12800000, guid: 92c3ef58ea083da488865d8a751b84a4, type: 3}
+  - {fileID: 12800000, guid: 50f7174f62b7b2f44b58879c1ded2882, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

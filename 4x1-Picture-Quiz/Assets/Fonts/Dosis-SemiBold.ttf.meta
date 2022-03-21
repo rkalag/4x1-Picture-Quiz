@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9de8edac57b05554fb79983451215f18
+guid: efa8211fda1214f408301c3ea13b46c4
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 16
-  forceTextureCase: -2
+  fontSize: 200
+  forceTextureCase: -1
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
@@ -12,11 +12,12 @@ TrueTypeFontImporter:
   fontNames:
   - Dosis
   fallbackFontReferences:
-  - {fileID: 12800000, guid: 7a1cb6f22de488d4a96ca60beadd571b, type: 3}
-  - {fileID: 12800000, guid: b18a6b34a9afc024fb019aa31ce8bb5d, type: 3}
-  - {fileID: 12800000, guid: fa4621b57aa1af649a5a2f0582fadfc3, type: 3}
-  - {fileID: 12800000, guid: 1926793c22e91814cb449f10d83aa933, type: 3}
-  - {fileID: 12800000, guid: 403b1d7dafaeb8b46a6341f34154c828, type: 3}
+  - {fileID: 12800000, guid: 5a5a7fc0314157740ad9135ec823fab1, type: 3}
+  - {fileID: 12800000, guid: 28890f62d958b224888bc802608a5f47, type: 3}
+  - {fileID: 12800000, guid: 99cb1c34ee51cb74b8270d64ec276ba3, type: 3}
+  - {fileID: 12800000, guid: df796df536de81542bcbd7a7c959f8a1, type: 3}
+  - {fileID: 12800000, guid: 92c3ef58ea083da488865d8a751b84a4, type: 3}
+  - {fileID: 12800000, guid: 50f7174f62b7b2f44b58879c1ded2882, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

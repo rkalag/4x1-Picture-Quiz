@@ -3,7 +3,27 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - ans
+  - Clue1
+  - Game
+  - Clue2
+  - Shop
+  - Setting
+  - Description
+  - QuizManager
+  - InfoPanel
+  - LevelComplete
+  - Credits
+  - DailyReward
+  - Category
+  - JSONReader
+  - LoadingText
+  - FillImg
+  - LevelManager
+  - LevelUIManager
+  - LockedImg
+  - AnswerWordPrefab
   layers:
   - Default
   - TransparentFX
