@@ -100,6 +100,8 @@ public class QuizManager : MonoBehaviour
     public void SelectedOption(WordData wordData)
     {
         if (wordData.emptyBox.activeSelf) return;
+        Debug.Log(currentAnswerIndex + "____" + answerWord.Length);
+        if (currentAnswerIndex >= answerWord.Length) return;
         if(wordData.CompareTag("ans"))
         {
             Debug.Log("ans");
@@ -124,10 +126,13 @@ public class QuizManager : MonoBehaviour
 
         for (int i = 0; i < answerWordArray.Length; i++)
         {
-            if(!answerWordArray[i].gTab.activeSelf)
+            if(answerWordArray[i].deleteBtn.activeSelf)
+                answerWordArray[i].deleteBtn.SetActive(false);
+            if (!answerWordArray[i].gTab.activeSelf)
             {
                 answerWordArray[i].GetComponent<Image>().enabled = false;
                 answerWordArray[i].gTab.SetActive(true);
+                answerWordArray[i].deleteBtn.SetActive(true);
                 answerWordArray[i].SetChar(wordData.charValue);
                 break;
             }

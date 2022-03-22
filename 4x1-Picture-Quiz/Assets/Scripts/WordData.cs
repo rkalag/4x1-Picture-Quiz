@@ -23,6 +23,10 @@ public class WordData : MonoBehaviour
         {
             gTab.SetActive(false);
         }
+        if(deleteBtn)
+        {
+            deleteBtn.SetActive(false);
+        }
         buttonObj = GetComponent<Button>();
         if(buttonObj)
         {
