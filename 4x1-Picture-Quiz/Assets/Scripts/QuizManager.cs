@@ -70,13 +70,14 @@ public class QuizManager : MonoBehaviour
     }
     public void SetQuestion()
     {
+        Debug.Log("SetQuestion: ");
         timeTaken = 0;
         currentAnswerIndex = 0;
         selectedCharIndex.Clear();
         questionImg.sprite = Sprite.Create(jsonReader.questionList[0], new Rect(0, 0, 475, 475), Vector2.zero);
 
 
-        answerWord = jsonReader.jsonData[DataManager.CURRENT_SUB_LEVEL]["answer"];
+        answerWord = jsonReader.jsonData[DataManager.CURRENT_LEVEL]["answer"];
         DataManager.ANSWER = answerWord;
         ResetQuestion();
         for (int i = 0; i < answerWord.Length; i++)
@@ -97,6 +98,7 @@ public class QuizManager : MonoBehaviour
         currentQuestionIndex++;
         gameStatus = GameStatus.Playing;
     }
+    
     public void SelectedOption(WordData wordData)
     {
         if (wordData.emptyBox.activeSelf) return;
@@ -140,6 +142,28 @@ public class QuizManager : MonoBehaviour
 
         CheckAnswer();
     }
+    public void ResetLastCharacter()
+    {
+        Debug.Log("selectedCharIndex.Count: " + selectedCharIndex.Count);
+        if (selectedCharIndex.Count > 0)
+        {
+            int index = selectedCharIndex[selectedCharIndex.Count - 1];
+            Debug.Log("index: " + index + "____currentAnswerIndex: "+ currentAnswerIndex);
+            optionWordArray[index].emptyBox.SetActive(false);
+            selectedCharIndex.RemoveAt(selectedCharIndex.Count - 1);
+
+            answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+            answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
+            answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+            if(currentAnswerIndex - 2 >= 0)
+                answerWordArray[currentAnswerIndex -2 ].deleteBtn.SetActive(true);
+            currentAnswerIndex--;
+            
+            // answerWordArray[currentAnswerIndex].SetChar('_');
+        }
+        Debug.Log("currentAnswerIndex:: " + currentAnswerIndex);
+
+    }
     void CheckAnswer()
     {
         if (currentAnswerIndex >= answerWord.Length)
@@ -157,13 +181,16 @@ public class QuizManager : MonoBehaviour
             {
                 Debug.Log("_____CORRECT!!___"+ currentQuestionIndex+"_____"+ questionCount);
                 gameStatus = GameStatus.Next;
-                //DataManager.CURRENT_LEVEL++;
+                DataManager.CURRENT_LEVEL++;
+                jsonReader.questionList.Clear();
+                game.CallLevelCompleted();
                 if (currentQuestionIndex <= questionCount)
                 {
                     // questionImg.sprite = Sprite.Create(jsonReader.solutionList[DataManager.CURRENT_SUB_LEVEL - 1], new Rect(0, 0, 662, 545), Vector2.zero);
                     // questionImg.sprite = questionData.questions[currentQuestionIndex-1].solutionImage;
-                    Invoke("ShowDescription", 1.5f);
-                    DataManager.CURRENT_SUB_LEVEL++;
+                    // Invoke("ShowDescription", 1.5f);
+                   // game.CallLevelCompleted();
+                   // DataManager.CURRENT_SUB_LEVEL++;
                 }
             }
             else
@@ -179,7 +206,7 @@ public class QuizManager : MonoBehaviour
         for (int i = 0; i < answerWordArray.Length; i++)
         {
             answerWordArray[i].gameObject.SetActive(true);
-            answerWordArray[i].SetChar('_');
+            //answerWordArray[i].SetChar('_');
         }
         for (int i = answerWord.Length; i < answerWordArray.Length; i++)
         {
@@ -190,19 +217,7 @@ public class QuizManager : MonoBehaviour
             optionWordArray[i].gameObject.SetActive(true);
         }
     }
-    public void ResetLastCharacter()
-    {
-        if(selectedCharIndex.Count > 0)
-        {
-            int index = selectedCharIndex[selectedCharIndex.Count - 1];
-            optionWordArray[index].gameObject.SetActive(true);
-            selectedCharIndex.RemoveAt(selectedCharIndex.Count - 1);
-
-            currentAnswerIndex--;
-            answerWordArray[currentAnswerIndex].SetChar('_');
-        }
-        
-    }
+    
     public void ShowCorrectLetter()
     {
         char revealChar;
