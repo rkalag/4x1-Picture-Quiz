@@ -101,7 +101,10 @@ public class QuizManager : MonoBehaviour
     
     public void SelectedOption(WordData wordData)
     {
-        if (wordData.emptyBox.activeSelf) return;
+        if (wordData.gTab != null)
+            if (wordData.gTab.activeSelf) return;
+        if (wordData.emptyBox != null)
+            if (wordData.emptyBox.activeSelf) return;
         Debug.Log(currentAnswerIndex + "____" + answerWord.Length);
         if (currentAnswerIndex >= answerWord.Length) return;
         if(wordData.CompareTag("ans"))
@@ -142,9 +145,19 @@ public class QuizManager : MonoBehaviour
 
         CheckAnswer();
     }
-    public void ResetLastCharacter()
+    public void ResetLastCharacter(Button btn)
     {
-        Debug.Log("selectedCharIndex.Count: " + selectedCharIndex.Count);
+        Debug.Log("btn: " + btn);
+        Debug.Log("btn: " + btn.transform.GetChild(0).gameObject.transform.GetChild(1));
+        if(!btn.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.activeSelf)
+        {
+            Debug.Log("qqqqqqqq");
+            return;
+        }
+        
+        //Debug.Log("selectedCharIndex.Count: " + selectedCharIndex.Count);
+        //Debug.Log("aaaaa: " + currentAnswerIndex +"___"+ answerWordArray[currentAnswerIndex - 1]);
+        answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
         if (selectedCharIndex.Count > 0)
         {
             int index = selectedCharIndex[selectedCharIndex.Count - 1];
@@ -196,6 +209,10 @@ public class QuizManager : MonoBehaviour
             else
             {
                 Debug.Log("_____WRONG!");
+                for (int i = 0; i < answerWordArray.Length; i++)
+                {
+                    //answerWordArray[i].gTab
+                }
             }
         }
     }
