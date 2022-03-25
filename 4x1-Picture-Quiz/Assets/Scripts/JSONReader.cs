@@ -91,6 +91,6 @@ public class JSONReader : MonoBehaviour
     IEnumerator RemoveLoading()
     {
         yield return new WaitForSeconds(1f);
-        Initiate.Fade("Selection", DataManager.SCENE_TRANSITION_COLOR, DataManager.SCENE_TRANSITION_DURATION);
+        Initiate.Fade("Selection", Color.black, 1.2f);
     }
 }

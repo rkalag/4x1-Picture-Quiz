@@ -215,6 +215,8 @@ MonoBehaviour:
   charValue: 0
   gTab: {fileID: 0}
   emptyBox: {fileID: 5028775462390602011}
+  deleteBtn: {fileID: 0}
+  emptyBoxCG: {fileID: 3644130049000145286}
   ind: 0
 --- !u!1 &5028775462390602011
 GameObject:
@@ -227,9 +229,10 @@ GameObject:
   - component: {fileID: 2658477510312112986}
   - component: {fileID: 6243062881543728531}
   - component: {fileID: 1605767857980746411}
+  - component: {fileID: 3644130049000145286}
   m_Layer: 5
   m_Name: EmptyBox
-  m_TagString: Untagged
+  m_TagString: EmptyBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -290,3 +293,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &3644130049000145286
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028775462390602011}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

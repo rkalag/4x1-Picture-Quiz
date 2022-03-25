@@ -14,6 +14,9 @@ public class WordData : MonoBehaviour
     public GameObject deleteBtn = null;
     private Button buttonObj;
 
+    public CanvasGroup emptyBoxCG;
+    public CanvasGroup gTabCG;
+
     [HideInInspector]
     public int ind;
 

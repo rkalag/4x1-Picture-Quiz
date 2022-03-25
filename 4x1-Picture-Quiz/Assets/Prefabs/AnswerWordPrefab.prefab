@@ -300,6 +300,8 @@ MonoBehaviour:
   gTab: {fileID: 9045325291464849722}
   emptyBox: {fileID: 0}
   deleteBtn: {fileID: 4335219991999241088}
+  emptyBoxCG: {fileID: 0}
+  gTabCG: {fileID: 434365875938379629}
   ind: 0
 --- !u!1 &9045325291464849722
 GameObject:
@@ -312,13 +314,14 @@ GameObject:
   - component: {fileID: 5020723636741134467}
   - component: {fileID: 3820954222196238765}
   - component: {fileID: 4721035672445070493}
+  - component: {fileID: 434365875938379629}
   m_Layer: 5
   m_Name: GTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5020723636741134467
 RectTransform:
   m_ObjectHideFlags: 0
@@ -377,3 +380,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &434365875938379629
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045325291464849722}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

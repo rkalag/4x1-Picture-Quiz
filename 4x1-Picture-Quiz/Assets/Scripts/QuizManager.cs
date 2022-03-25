@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class QuizManager : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class QuizManager : MonoBehaviour
     private WordData[] optionWordArray;
     [SerializeField]
     public Image questionImg;
+
+    [SerializeField] GameObject removeAllBtn = null;
+
+    private int index;
 
 
     private char[] charArray = new char[8];
@@ -47,6 +52,10 @@ public class QuizManager : MonoBehaviour
 
     public float timeTaken = 0;
 
+    Texture2D texture;
+
+    
+
     private void Awake()
     {
         jsonReader = GameObject.FindGameObjectWithTag("JSONReader").GetComponent<JSONReader>();
@@ -65,8 +74,9 @@ public class QuizManager : MonoBehaviour
     }
     private void Start()
     {
+        texture = Resources.Load<Texture2D>("Sprites/GreenTab");
         //questionCount = jsonReader.jsonData.Count - 1;
-       // SetQuestion();
+        // SetQuestion();
     }
     public void SetQuestion()
     {
@@ -123,7 +133,10 @@ public class QuizManager : MonoBehaviour
         //answerWordArray[currentAnswerIndex].SetChar(wordData.charValue);
         //answerWordArray[currentAnswerIndex].GetComponent<Image>().sprite = sp;
         // selectedChar.Add(wordData.gameObject);
+        
         wordData.emptyBox.SetActive(true);
+        wordData.emptyBoxCG.alpha = 0;
+        wordData.emptyBoxCG.DOFade(1, 0.3f);
         // wordData.gameObject.em
 
         //wordData.gameObject.SetActive(false);
@@ -137,12 +150,14 @@ public class QuizManager : MonoBehaviour
             {
                 answerWordArray[i].GetComponent<Image>().enabled = false;
                 answerWordArray[i].gTab.SetActive(true);
+                answerWordArray[i].gTabCG.alpha = 0;
+                answerWordArray[i].gTabCG.DOFade(1, 0.3f);
                 answerWordArray[i].deleteBtn.SetActive(true);
                 answerWordArray[i].SetChar(wordData.charValue);
                 break;
             }
         }
-
+        FindObjectOfType<SoundManager>().Play("Set");
         CheckAnswer();
     }
     public void ResetLastCharacter(Button btn)
@@ -154,28 +169,58 @@ public class QuizManager : MonoBehaviour
             Debug.Log("qqqqqqqq");
             return;
         }
-        
+        for (int i = 0; i < answerWordArray.Length; i++)
+        {
+            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+            
+
+        }
+        if (removeAllBtn.activeSelf)
+        {
+            removeAllBtn.SetActive(false);
+        }
+
         //Debug.Log("selectedCharIndex.Count: " + selectedCharIndex.Count);
         //Debug.Log("aaaaa: " + currentAnswerIndex +"___"+ answerWordArray[currentAnswerIndex - 1]);
         answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
         if (selectedCharIndex.Count > 0)
         {
-            int index = selectedCharIndex[selectedCharIndex.Count - 1];
+            index = selectedCharIndex[selectedCharIndex.Count - 1];
             Debug.Log("index: " + index + "____currentAnswerIndex: "+ currentAnswerIndex);
-            optionWordArray[index].emptyBox.SetActive(false);
+            //optionWordArray[index].emptyBox.SetActive(false);
+            optionWordArray[index].emptyBoxCG.alpha = 1;
+            optionWordArray[index].emptyBoxCG.DOFade(0, 0.3f);
             selectedCharIndex.RemoveAt(selectedCharIndex.Count - 1);
 
             answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
-            answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
-            answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
-            if(currentAnswerIndex - 2 >= 0)
-                answerWordArray[currentAnswerIndex -2 ].deleteBtn.SetActive(true);
-            currentAnswerIndex--;
-            
+           // answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
+            answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 1;
+            answerWordArray[currentAnswerIndex - 1].gTabCG.DOFade(0, 0.3f).OnComplete(gTabAlphaGone);
+             answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+            if (currentAnswerIndex - 2 >= 0)
+                answerWordArray[currentAnswerIndex - 2].deleteBtn.SetActive(true);
+
+
             // answerWordArray[currentAnswerIndex].SetChar('_');
         }
+        FindObjectOfType<SoundManager>().Play("Delete");
         Debug.Log("currentAnswerIndex:: " + currentAnswerIndex);
 
+    }
+    void gTabAlphaGone()
+    {
+        //int index = selectedCharIndex[selectedCharIndex.Count - 1];
+        Debug.Log("index: " + index + "____currentAnswerIndex: " + currentAnswerIndex);
+        optionWordArray[index].emptyBoxCG.alpha = 0;
+        optionWordArray[index].emptyBox.SetActive(false);
+
+        answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+        answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
+        answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 0;
+        answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        
+        currentAnswerIndex--;
     }
     void CheckAnswer()
     {
@@ -211,8 +256,11 @@ public class QuizManager : MonoBehaviour
                 Debug.Log("_____WRONG!");
                 for (int i = 0; i < answerWordArray.Length; i++)
                 {
-                    //answerWordArray[i].gTab
+                    answerWordArray[i].gTab.GetComponent<Image>().color = new Color(0.5764706f, 0, 0, 1f);
+                    answerWordArray[i].gTab.GetComponent<Image>().sprite = null;
                 }
+                removeAllBtn.SetActive(true);
+                FindObjectOfType<SoundManager>().Play("Fail");
             }
         }
     }
@@ -282,6 +330,28 @@ public class QuizManager : MonoBehaviour
                 optionWordArray[i].gameObject.SetActive(false);
             }
         }
+    }
+    public void RemoveAllLetters()
+    {
+        if (removeAllBtn.activeSelf)
+        {
+            removeAllBtn.SetActive(false);
+        }
+
+        for (int i = 0; i < optionWordArray.Length; i++)
+        {
+            optionWordArray[i].emptyBox.SetActive(false);
+        }
+        for (int i = 0; i < answerWordArray.Length; i++)
+        {
+            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+            answerWordArray[i].GetComponent<Image>().enabled = true;
+            answerWordArray[i].gTab.SetActive(false);
+            answerWordArray[i].deleteBtn.SetActive(false);
+        }
+        currentAnswerIndex = 0;
+        FindObjectOfType<SoundManager>().Play("Delete");
     }
     public void SendBackLetter(int index)
     {

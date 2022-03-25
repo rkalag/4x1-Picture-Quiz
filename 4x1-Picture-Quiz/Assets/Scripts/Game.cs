@@ -65,6 +65,7 @@ public class Game : MonoBehaviour
     private IEnumerator AnimateLevelCompleted()
     {
         yield return new WaitForSeconds(0.5f);
+        FindObjectOfType<SoundManager>().Play("LevelPassed");
         levelCompletedBG.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f);
         levelCompletedText.GetComponent<RectTransform>().DOAnchorPosX(0, 0.5f).OnComplete(LevelCompletedDone);
     }

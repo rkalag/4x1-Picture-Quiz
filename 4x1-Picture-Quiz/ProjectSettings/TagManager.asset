@@ -24,6 +24,8 @@ TagManager:
   - LevelUIManager
   - LockedImg
   - AnswerWordPrefab
+  - RemoveAllBtn
+  - EmptyBox
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,6 @@ public class Menu : MonoBehaviour
     }
     public void LoadGame()
     {
-        Initiate.Fade("Game", DataManager.SCENE_TRANSITION_COLOR, DataManager.SCENE_TRANSITION_DURATION);
+        Initiate.Fade("Game", Color.black, 1.2f);
     }
 }
