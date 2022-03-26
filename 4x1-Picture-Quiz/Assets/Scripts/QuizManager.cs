@@ -340,7 +340,8 @@ public class QuizManager : MonoBehaviour
 
         for (int i = 0; i < optionWordArray.Length; i++)
         {
-            optionWordArray[i].emptyBox.SetActive(false);
+            optionWordArray[i].emptyBoxCG.alpha = 1;
+            optionWordArray[i].emptyBoxCG.DOFade(0, 0.3f).OnComplete(AllLettersRemoved);
         }
         for (int i = 0; i < answerWordArray.Length; i++)
         {
@@ -352,6 +353,14 @@ public class QuizManager : MonoBehaviour
         }
         currentAnswerIndex = 0;
         FindObjectOfType<SoundManager>().Play("Delete");
+    }
+    void AllLettersRemoved()
+    {
+        for (int i = 0; i < optionWordArray.Length; i++)
+        {
+            optionWordArray[i].emptyBoxCG.alpha = 0;
+            optionWordArray[i].emptyBox.SetActive(false);
+        }
     }
     public void SendBackLetter(int index)
     {
