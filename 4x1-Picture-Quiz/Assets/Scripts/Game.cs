@@ -24,6 +24,8 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject levelCompletedText = null;
     [SerializeField] private Text levelCompletedTxt = null;
     [SerializeField] private string []textArray;
+
+    [SerializeField] GameObject jokerBtn = null;
     void Start()
     {
         if(levelInfo)
@@ -49,6 +51,7 @@ public class Game : MonoBehaviour
     {
         Debug.Log("____LevelInfoDone");
         levelInfo.SetActive(false);
+        Invoke("Shake", Random.Range(4f, 8f));
     }
 
     //Level Completed
@@ -73,7 +76,6 @@ public class Game : MonoBehaviour
     {
         Debug.Log("____LevelCompletedDone");
         StartCoroutine(ShowLevelInfo());
-        //levelCompleted.SetActive(false);
     }
     private IEnumerator ShowLevelInfo()
     {
@@ -83,6 +85,20 @@ public class Game : MonoBehaviour
         // levelInfo.SetActive(true);
         // StartCoroutine(jsonReader.DownloadImage());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Shake()
+    {
+        Debug.Log("____Shaking");
+        const float duration = 0.8f;
+        const float strength = 0.1f;
+
+        jokerBtn.GetComponent<Transform>().DOShakePosition(duration, strength);
+        jokerBtn.GetComponent<Transform>().DOShakeRotation(duration, strength);
+        jokerBtn.GetComponent<Transform>().DOShakeScale(duration, strength).OnComplete(ShakeComplete);
+    }
+    void ShakeComplete()
+    {
+        Invoke("Shake", Random.Range(4f, 8f));
     }
 
 }

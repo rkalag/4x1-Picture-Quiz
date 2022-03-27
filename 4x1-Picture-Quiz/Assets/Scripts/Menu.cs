@@ -17,6 +17,6 @@ public class Menu : MonoBehaviour
     }
     public void LoadGame()
     {
-        Initiate.Fade("Game", Color.black, 1.2f);
+        Initiate.Fade("Game", Color.black, 2f);
     }
 }

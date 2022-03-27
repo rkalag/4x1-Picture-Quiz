@@ -111,6 +111,7 @@ public class QuizManager : MonoBehaviour
     
     public void SelectedOption(WordData wordData)
     {
+
         if (wordData.gTab != null)
             if (wordData.gTab.activeSelf) return;
         if (wordData.emptyBox != null)
@@ -348,7 +349,10 @@ public class QuizManager : MonoBehaviour
             answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
             answerWordArray[i].GetComponent<Image>().enabled = true;
-            answerWordArray[i].gTab.SetActive(false);
+            //answerWordArray[i].gTab.SetActive(false);
+            answerWordArray[i].gTabCG.alpha = 1;
+            answerWordArray[i].gTabCG.DOFade(0, 0.3f);
+            //answerWordArray[i].deleteBtn.SetActive(false);
             answerWordArray[i].deleteBtn.SetActive(false);
         }
         currentAnswerIndex = 0;
@@ -360,6 +364,14 @@ public class QuizManager : MonoBehaviour
         {
             optionWordArray[i].emptyBoxCG.alpha = 0;
             optionWordArray[i].emptyBox.SetActive(false);
+        }
+        for (int i = 0; i < answerWordArray.Length; i++)
+        {
+            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+            answerWordArray[i].GetComponent<Image>().enabled = true;
+            answerWordArray[i].gTab.SetActive(false);
+            answerWordArray[i].deleteBtn.SetActive(false);
         }
     }
     public void SendBackLetter(int index)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class WordData : MonoBehaviour
@@ -34,8 +35,10 @@ public class WordData : MonoBehaviour
         if(buttonObj)
         {
             buttonObj.onClick.AddListener(() => CharSelected());
+            
         }
     }
+    
     public void GetIndex(int index)
     {
         ind = index;

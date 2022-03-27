@@ -217,6 +217,7 @@ MonoBehaviour:
   emptyBox: {fileID: 5028775462390602011}
   deleteBtn: {fileID: 0}
   emptyBoxCG: {fileID: 3644130049000145286}
+  gTabCG: {fileID: 0}
   ind: 0
 --- !u!1 &5028775462390602011
 GameObject:
