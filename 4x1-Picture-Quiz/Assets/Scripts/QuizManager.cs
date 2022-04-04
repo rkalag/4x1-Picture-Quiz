@@ -9,17 +9,27 @@ public class QuizManager : MonoBehaviour
 {
     public static QuizManager instance;
 
+    [SerializeField] GameObject answerWordArrayObj, answerWordArray2Obj, optionWordArrayObj, optionWordArray2Obj;
+
     [SerializeField]
     private WordData[] answerWordArray;
 
-    
+    [SerializeField]
+    private WordData[] answerWordArray2;
+
+
 
     [SerializeField]
     private WordData[] optionWordArray;
+
+    [SerializeField]
+    private WordData[] optionWordArray2;
+
     [SerializeField]
     public Image questionImg;
 
     [SerializeField] GameObject removeAllBtn = null;
+    [SerializeField] GameObject removeAllBtn2 = null;
 
     private int index;
 
@@ -89,22 +99,72 @@ public class QuizManager : MonoBehaviour
 
         answerWord = jsonReader.jsonData[DataManager.CURRENT_LEVEL]["answer"];
         DataManager.ANSWER = answerWord;
+        Debug.Log("answerWord.Length: " +answerWord +"_____"+ answerWord.Length);
+        if(answerWord.Length <= 8)
+        {
+            answerWordArrayObj.SetActive(true);
+            optionWordArrayObj.SetActive(true);
+            answerWordArray2Obj.SetActive(false);
+            optionWordArray2Obj.SetActive(false);
+            charArray = new char[8];
+        }
+        else
+        {
+            answerWordArrayObj.SetActive(false);
+            optionWordArrayObj.SetActive(false);
+            answerWordArray2Obj.SetActive(true);
+            optionWordArray2Obj.SetActive(true);
+            charArray = new char[12];
+            if (answerWord.Length == 12)
+            {
+                for (int i = 0; i < answerWordArray2.Length; i++)
+                {
+                    answerWordArray2[i].gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(34f, 35.35f);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < answerWordArray2.Length; i++)
+                {
+                    answerWordArray2[i].gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(38.1f, 39.65f);
+                }
+            }
+
+        }
         ResetQuestion();
         for (int i = 0; i < answerWord.Length; i++)
         {
             charArray[i] = char.ToUpper(answerWord[i]);
         }
-        for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+        if(answerWord.Length <= 8)
         {
-            charArray[i] = (char)UnityEngine.Random.Range(65, 91);
+            for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+            {
+                charArray[i] = (char)UnityEngine.Random.Range(65, 91);
 
+            }
+            charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+            for (int i = 0; i < optionWordArray.Length; i++)
+            {
+                optionWordArray[i].SetChar(charArray[i]);
+            }
         }
-        charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
-        
-        for (int i = 0; i < optionWordArray.Length; i++)
+        else
         {
-            optionWordArray[i].SetChar(charArray[i]);
+            for (int i = answerWord.Length; i < optionWordArray2.Length; i++)
+            {
+                charArray[i] = (char)UnityEngine.Random.Range(65, 91);
+
+            }
+            charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                optionWordArray2[i].SetChar(charArray[i]);
+            }
         }
+        
         currentQuestionIndex++;
         gameStatus = GameStatus.Playing;
     }
@@ -116,7 +176,7 @@ public class QuizManager : MonoBehaviour
             if (wordData.gTab.activeSelf) return;
         if (wordData.emptyBox != null)
             if (wordData.emptyBox.activeSelf) return;
-        Debug.Log(currentAnswerIndex + "____" + answerWord.Length);
+        Debug.Log(currentAnswerIndex + "answerWord.Length____" + answerWord.Length);
         if (currentAnswerIndex >= answerWord.Length) return;
         if(wordData.CompareTag("ans"))
         {
@@ -128,7 +188,7 @@ public class QuizManager : MonoBehaviour
             Debug.Log("opt");
         }
         
-        Debug.Log(currentAnswerIndex + "____" + answerWordArray.Length);
+        //Debug.Log(currentAnswerIndex + "____" + answerWordArray.Length);
         if (gameStatus == GameStatus.Next) return;
         selectedCharIndex.Add(wordData.transform.GetSiblingIndex());
         //answerWordArray[currentAnswerIndex].SetChar(wordData.charValue);
@@ -142,22 +202,43 @@ public class QuizManager : MonoBehaviour
 
         //wordData.gameObject.SetActive(false);
         currentAnswerIndex++;
-
-        for (int i = 0; i < answerWordArray.Length; i++)
+        if(answerWord.Length <= 8)
         {
-            if(answerWordArray[i].deleteBtn.activeSelf)
-                answerWordArray[i].deleteBtn.SetActive(false);
-            if (!answerWordArray[i].gTab.activeSelf)
+            for (int i = 0; i < answerWordArray.Length; i++)
             {
-                answerWordArray[i].GetComponent<Image>().enabled = false;
-                answerWordArray[i].gTab.SetActive(true);
-                answerWordArray[i].gTabCG.alpha = 0;
-                answerWordArray[i].gTabCG.DOFade(1, 0.3f);
-                answerWordArray[i].deleteBtn.SetActive(true);
-                answerWordArray[i].SetChar(wordData.charValue);
-                break;
+                if (answerWordArray[i].deleteBtn.activeSelf)
+                    answerWordArray[i].deleteBtn.SetActive(false);
+                if (!answerWordArray[i].gTab.activeSelf)
+                {
+                    answerWordArray[i].GetComponent<Image>().enabled = false;
+                    answerWordArray[i].gTab.SetActive(true);
+                    answerWordArray[i].gTabCG.alpha = 0;
+                    answerWordArray[i].gTabCG.DOFade(1, 0.3f);
+                    answerWordArray[i].deleteBtn.SetActive(true);
+                    answerWordArray[i].SetChar(wordData.charValue);
+                    break;
+                }
             }
         }
+        else
+        {
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                if (answerWordArray2[i].deleteBtn.activeSelf)
+                    answerWordArray2[i].deleteBtn.SetActive(false);
+                if (!answerWordArray2[i].gTab.activeSelf)
+                {
+                    answerWordArray2[i].GetComponent<Image>().enabled = false;
+                    answerWordArray2[i].gTab.SetActive(true);
+                    answerWordArray2[i].gTabCG.alpha = 0;
+                    answerWordArray2[i].gTabCG.DOFade(1, 0.3f);
+                    answerWordArray2[i].deleteBtn.SetActive(true);
+                    answerWordArray2[i].SetChar(wordData.charValue);
+                    break;
+                }
+            }
+        }
+        
         FindObjectOfType<SoundManager>().Play("Set");
         CheckAnswer();
     }
@@ -170,40 +251,78 @@ public class QuizManager : MonoBehaviour
             Debug.Log("qqqqqqqq");
             return;
         }
-        for (int i = 0; i < answerWordArray.Length; i++)
+        if (answerWord.Length <= 8)
         {
-            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
-            
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray2[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+            }
+        }
 
-        }
+
+        
         if (removeAllBtn.activeSelf)
-        {
             removeAllBtn.SetActive(false);
-        }
+        if (removeAllBtn2.activeSelf)
+            removeAllBtn2.SetActive(false);
 
         //Debug.Log("selectedCharIndex.Count: " + selectedCharIndex.Count);
         //Debug.Log("aaaaa: " + currentAnswerIndex +"___"+ answerWordArray[currentAnswerIndex - 1]);
-        answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        if (answerWord.Length <= 8)
+        {
+            answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        }
+        else
+        {
+            answerWordArray2[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        }
+        
         if (selectedCharIndex.Count > 0)
         {
             index = selectedCharIndex[selectedCharIndex.Count - 1];
             Debug.Log("index: " + index + "____currentAnswerIndex: "+ currentAnswerIndex);
             //optionWordArray[index].emptyBox.SetActive(false);
-            optionWordArray[index].emptyBoxCG.alpha = 1;
-            optionWordArray[index].emptyBoxCG.DOFade(0, 0.3f);
+            if(answerWord.Length <= 8)
+            {
+                optionWordArray[index].emptyBoxCG.alpha = 1;
+                optionWordArray[index].emptyBoxCG.DOFade(0, 0.3f);
+            }
+            else
+            {
+                optionWordArray2[index].emptyBoxCG.alpha = 1;
+                optionWordArray2[index].emptyBoxCG.DOFade(0, 0.3f);
+            }
+            
             selectedCharIndex.RemoveAt(selectedCharIndex.Count - 1);
+            if(answerWord.Length <= 8)
+            {
+                answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+                answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 1;
+                answerWordArray[currentAnswerIndex - 1].gTabCG.DOFade(0, 0.3f).OnComplete(gTabAlphaGone);
+                answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+                if (currentAnswerIndex - 2 >= 0)
+                    answerWordArray[currentAnswerIndex - 2].deleteBtn.SetActive(true);
+            }
+            else
+            {
+                answerWordArray2[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+                answerWordArray2[currentAnswerIndex - 1].gTabCG.alpha = 1;
+                answerWordArray2[currentAnswerIndex - 1].gTabCG.DOFade(0, 0.3f).OnComplete(gTabAlphaGone);
+                answerWordArray2[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+                if (currentAnswerIndex - 2 >= 0)
+                    answerWordArray2[currentAnswerIndex - 2].deleteBtn.SetActive(true);
+            }
 
-            answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
-           // answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
-            answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 1;
-            answerWordArray[currentAnswerIndex - 1].gTabCG.DOFade(0, 0.3f).OnComplete(gTabAlphaGone);
-             answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
-            if (currentAnswerIndex - 2 >= 0)
-                answerWordArray[currentAnswerIndex - 2].deleteBtn.SetActive(true);
-
-
-            // answerWordArray[currentAnswerIndex].SetChar('_');
+            
         }
         FindObjectOfType<SoundManager>().Play("Delete");
         Debug.Log("currentAnswerIndex:: " + currentAnswerIndex);
@@ -213,13 +332,34 @@ public class QuizManager : MonoBehaviour
     {
         //int index = selectedCharIndex[selectedCharIndex.Count - 1];
         Debug.Log("index: " + index + "____currentAnswerIndex: " + currentAnswerIndex);
-        optionWordArray[index].emptyBoxCG.alpha = 0;
-        optionWordArray[index].emptyBox.SetActive(false);
+        if(answerWord.Length <= 8)
+        {
+            optionWordArray[index].emptyBoxCG.alpha = 0;
+            optionWordArray[index].emptyBox.SetActive(false);
+        }
+        else
+        {
+            optionWordArray2[index].emptyBoxCG.alpha = 0;
+            optionWordArray2[index].emptyBox.SetActive(false);
+        }
+        
 
-        answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
-        answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
-        answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 0;
-        answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        if(answerWord.Length <= 8)
+        {
+            answerWordArray[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+            answerWordArray[currentAnswerIndex - 1].gTab.SetActive(false);
+            answerWordArray[currentAnswerIndex - 1].gTabCG.alpha = 0;
+            answerWordArray[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        }
+        else
+        {
+            answerWordArray2[currentAnswerIndex - 1].GetComponent<Image>().enabled = true;
+            answerWordArray2[currentAnswerIndex - 1].gTab.SetActive(false);
+            answerWordArray2[currentAnswerIndex - 1].gTabCG.alpha = 0;
+            answerWordArray2[currentAnswerIndex - 1].deleteBtn.SetActive(false);
+        }
+
+        
         
         currentAnswerIndex--;
     }
@@ -230,11 +370,23 @@ public class QuizManager : MonoBehaviour
             correctAnswer = true;
             for (int i = 0; i < answerWord.Length; i++)
             {
-                if (char.ToUpper(answerWord[i]) != char.ToUpper(answerWordArray[i].charValue))
+                if(answerWord.Length <= 8)
                 {
-                    correctAnswer = false;
-                    break;
+                    if (char.ToUpper(answerWord[i]) != char.ToUpper(answerWordArray[i].charValue))
+                    {
+                        correctAnswer = false;
+                        break;
+                    }
                 }
+                else
+                {
+                    if (char.ToUpper(answerWord[i]) != char.ToUpper(answerWordArray2[i].charValue))
+                    {
+                        correctAnswer = false;
+                        break;
+                    }
+                }
+                
             }
             if (correctAnswer)
             {
@@ -255,141 +407,338 @@ public class QuizManager : MonoBehaviour
             else
             {
                 Debug.Log("_____WRONG!");
-                for (int i = 0; i < answerWordArray.Length; i++)
+                if(answerWord.Length <= 8)
                 {
-                    answerWordArray[i].gTab.GetComponent<Image>().color = new Color(0.5764706f, 0, 0, 1f);
-                    answerWordArray[i].gTab.GetComponent<Image>().sprite = null;
+                    for (int i = 0; i < answerWordArray.Length; i++)
+                    {
+                        answerWordArray[i].gTab.GetComponent<Image>().color = new Color(0.5764706f, 0, 0, 1f);
+                        answerWordArray[i].gTab.GetComponent<Image>().sprite = null;
+                    }
+                    removeAllBtn.SetActive(true);
                 }
-                removeAllBtn.SetActive(true);
+                else
+                {
+                    for (int i = 0; i < answerWordArray2.Length; i++)
+                    {
+                        answerWordArray2[i].gTab.GetComponent<Image>().color = new Color(0.5764706f, 0, 0, 1f);
+                        answerWordArray2[i].gTab.GetComponent<Image>().sprite = null;
+                    }
+                    removeAllBtn2.SetActive(true);
+                }
+                
+                
                 FindObjectOfType<SoundManager>().Play("Fail");
             }
         }
     }
     public void ResetQuestion()
     {
-        Debug.Log("answerWordArray.Length____" + answerWordArray.Length);
-        Debug.Log("optionWordArray.Length____" + optionWordArray.Length);
-        for (int i = 0; i < answerWordArray.Length; i++)
+       // Debug.Log("answerWordArray.Length____" + answerWordArray.Length);
+       // Debug.Log("optionWordArray.Length____" + optionWordArray.Length);
+        if(answerWord.Length <= 8)
         {
-            answerWordArray[i].gameObject.SetActive(true);
-            //answerWordArray[i].SetChar('_');
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].gameObject.SetActive(true);
+                //answerWordArray[i].SetChar('_');
+            }
+            for (int i = answerWord.Length; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < optionWordArray.Length; i++)
+            {
+                optionWordArray[i].gameObject.SetActive(true);
+            }
         }
-        for (int i = answerWord.Length; i < answerWordArray.Length; i++)
+        else
         {
-            answerWordArray[i].gameObject.SetActive(false);
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].gameObject.SetActive(true);
+            }
+            for (int i = answerWord.Length; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                optionWordArray2[i].gameObject.SetActive(true);
+            }
         }
-        for (int i = 0; i < optionWordArray.Length; i++)
-        {
-            optionWordArray[i].gameObject.SetActive(true);
-        }
+        
     }
     
     public void ShowCorrectLetter()
     {
+        if (DataManager.TOTAL_JOKER < 1) return;
         char revealChar;
         if (gameStatus == GameStatus.Next || currentAnswerIndex >= answerWord.Length) return;
-        answerWordArray[currentAnswerIndex].SetChar(char.ToUpper(answerWord[currentAnswerIndex]));
+        //if(answerWord.Length <= 8)
+        //    answerWordArray[currentAnswerIndex].SetChar(char.ToUpper(answerWord[currentAnswerIndex]));
+        //else
+        //    answerWordArray2[currentAnswerIndex].SetChar(char.ToUpper(answerWord[currentAnswerIndex]));
+        
+        selectedCharIndex.Add(answerWordArray[currentAnswerIndex].transform.GetSiblingIndex());
         revealChar = char.ToUpper(answerWord[currentAnswerIndex]);
-        currentAnswerIndex++;
-        for (int i = 0; i < optionWordArray.Length; i++)
+        
+        if(answerWord.Length <= 8)
         {
-            Debug.Log(optionWordArray[i].GetChar()+"_____"+ revealChar);
-            if(optionWordArray[i].gameObject.activeSelf && optionWordArray[i].GetChar() == revealChar)
+            for (int i = 0; i < optionWordArray.Length; i++)
             {
-                optionWordArray[i].gameObject.SetActive(false);
-                break;
+                Debug.Log(optionWordArray[i].GetChar() + "_____" + revealChar);
+                if (optionWordArray[i].gameObject.activeSelf && optionWordArray[i].GetChar() == revealChar)
+                {
+                   // optionWordArray[i].gameObject.SetActive(false);
+                    optionWordArray[i].emptyBox.SetActive(true);
+                    optionWordArray[i].emptyBoxCG.alpha = 0;
+                    optionWordArray[i].emptyBoxCG.DOFade(1, 0.3f);
+                    break;
+                }
             }
-                
         }
+        else
+        {
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                Debug.Log(optionWordArray2[i].GetChar() + "_____" + revealChar);
+                if (optionWordArray2[i].gameObject.activeSelf && optionWordArray2[i].GetChar() == revealChar)
+                {
+                    //optionWordArray2[i].gameObject.SetActive(false);
+                    optionWordArray2[i].emptyBox.SetActive(true);
+                    optionWordArray2[i].emptyBoxCG.alpha = 0;
+                    optionWordArray2[i].emptyBoxCG.DOFade(1, 0.3f);
+                    break;
+                }
+            }
+        }
+        currentAnswerIndex++;
+        if (answerWord.Length <= 8)
+        {
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                if (answerWordArray[i].deleteBtn.activeSelf)
+                    answerWordArray[i].deleteBtn.SetActive(false);
+                if (!answerWordArray[i].gTab.activeSelf)
+                {
+                    answerWordArray[i].GetComponent<Image>().enabled = false;
+                    answerWordArray[i].gTab.SetActive(true);
+                    answerWordArray[i].gTabCG.alpha = 0;
+                    answerWordArray[i].gTabCG.DOFade(1, 0.3f);
+                    answerWordArray[i].deleteBtn.SetActive(true);
+                    answerWordArray[i].SetChar(revealChar);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                if (answerWordArray2[i].deleteBtn.activeSelf)
+                    answerWordArray2[i].deleteBtn.SetActive(false);
+                if (!answerWordArray2[i].gTab.activeSelf)
+                {
+                    answerWordArray2[i].GetComponent<Image>().enabled = false;
+                    answerWordArray2[i].gTab.SetActive(true);
+                    answerWordArray2[i].gTabCG.alpha = 0;
+                    answerWordArray2[i].gTabCG.DOFade(1, 0.3f);
+                    answerWordArray2[i].deleteBtn.SetActive(true);
+                    answerWordArray2[i].SetChar(revealChar);
+                    break;
+                }
+            }
+        }
+        FindObjectOfType<SoundManager>().Play("Set");
+
         CheckAnswer();
     }
     public void ShowCorrectWord()
     {
         currentAnswerIndex = 0;
-        for (int i = 0; i < answerWordArray.Length; i++)
+        if(answerWord.Length <= 8)
         {
-            answerWordArray[i].SetChar('_');
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].SetChar('_');
+            }
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                ShowCorrectLetter();
+            }
         }
-        for (int i = 0; i < answerWordArray.Length; i++)
+        else
         {
-            ShowCorrectLetter();
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].SetChar('_');
+            }
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                ShowCorrectLetter();
+            }
         }
+        
     }
     public void RemoveUnnecessaryLetters()
     {
-
-        //Debug.Log(answerWordArray.Length);
-        for (int i = 0; i < optionWordArray.Length; i++)
-        { 
-            if(answerWord.ToUpper().Contains(optionWordArray[i].GetChar()))
+        if(answerWord.Length <= 8)
+        {
+            for (int i = 0; i < optionWordArray.Length; i++)
             {
-                Debug.Log("Match!");
-            }
-            else
-            {
-                Debug.Log("___UnMatch!");
-                optionWordArray[i].gameObject.SetActive(false);
+                if (answerWord.ToUpper().Contains(optionWordArray[i].GetChar()))
+                {
+                    Debug.Log("Match!");
+                }
+                else
+                {
+                    Debug.Log("___UnMatch!");
+                    optionWordArray[i].gameObject.SetActive(false);
+                }
             }
         }
+        else
+        {
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                if (answerWord.ToUpper().Contains(optionWordArray2[i].GetChar()))
+                {
+                    Debug.Log("Match!");
+                }
+                else
+                {
+                    Debug.Log("___UnMatch!");
+                    optionWordArray2[i].gameObject.SetActive(false);
+                }
+            }
+        }
+        
+        
     }
     public void RemoveAllLetters()
     {
         if (removeAllBtn.activeSelf)
-        {
             removeAllBtn.SetActive(false);
-        }
+        if (removeAllBtn2.activeSelf)
+            removeAllBtn2.SetActive(false);
 
-        for (int i = 0; i < optionWordArray.Length; i++)
+
+        if (answerWord.Length <= 8)
         {
-            optionWordArray[i].emptyBoxCG.alpha = 1;
-            optionWordArray[i].emptyBoxCG.DOFade(0, 0.3f).OnComplete(AllLettersRemoved);
+            for (int i = 0; i < optionWordArray.Length; i++)
+            {
+                optionWordArray[i].emptyBoxCG.alpha = 1;
+                optionWordArray[i].emptyBoxCG.DOFade(0, 0.3f).OnComplete(AllLettersRemoved);
+            }
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+                answerWordArray[i].GetComponent<Image>().enabled = true;
+                //answerWordArray[i].gTab.SetActive(false);
+                answerWordArray[i].gTabCG.alpha = 1;
+                answerWordArray[i].gTabCG.DOFade(0, 0.3f);
+                //answerWordArray[i].deleteBtn.SetActive(false);
+                answerWordArray[i].deleteBtn.SetActive(false);
+            }
         }
-        for (int i = 0; i < answerWordArray.Length; i++)
+        else
         {
-            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
-            answerWordArray[i].GetComponent<Image>().enabled = true;
-            //answerWordArray[i].gTab.SetActive(false);
-            answerWordArray[i].gTabCG.alpha = 1;
-            answerWordArray[i].gTabCG.DOFade(0, 0.3f);
-            //answerWordArray[i].deleteBtn.SetActive(false);
-            answerWordArray[i].deleteBtn.SetActive(false);
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                optionWordArray2[i].emptyBoxCG.alpha = 1;
+                optionWordArray2[i].emptyBoxCG.DOFade(0, 0.3f).OnComplete(AllLettersRemoved);
+            }
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray2[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+                answerWordArray2[i].GetComponent<Image>().enabled = true;
+                //answerWordArray2[i].gTab.SetActive(false);
+                answerWordArray2[i].gTabCG.alpha = 1;
+                answerWordArray2[i].gTabCG.DOFade(0, 0.3f);
+                //answerWordArray2[i].deleteBtn.SetActive(false);
+                answerWordArray2[i].deleteBtn.SetActive(false);
+            }
         }
+        
         currentAnswerIndex = 0;
         FindObjectOfType<SoundManager>().Play("Delete");
     }
     void AllLettersRemoved()
     {
-        for (int i = 0; i < optionWordArray.Length; i++)
+        
+        if(answerWord.Length <= 8)
         {
-            optionWordArray[i].emptyBoxCG.alpha = 0;
-            optionWordArray[i].emptyBox.SetActive(false);
+            for (int i = 0; i < optionWordArray.Length; i++)
+            {
+                optionWordArray[i].emptyBoxCG.alpha = 0;
+                optionWordArray[i].emptyBox.SetActive(false);
+            }
+            for (int i = 0; i < answerWordArray.Length; i++)
+            {
+                answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+                answerWordArray[i].GetComponent<Image>().enabled = true;
+                answerWordArray[i].gTab.SetActive(false);
+                answerWordArray[i].deleteBtn.SetActive(false);
+            }
         }
-        for (int i = 0; i < answerWordArray.Length; i++)
+        else
         {
-            answerWordArray[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            answerWordArray[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
-            answerWordArray[i].GetComponent<Image>().enabled = true;
-            answerWordArray[i].gTab.SetActive(false);
-            answerWordArray[i].deleteBtn.SetActive(false);
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                optionWordArray2[i].emptyBoxCG.alpha = 0;
+                optionWordArray2[i].emptyBox.SetActive(false);
+            }
+            for (int i = 0; i < answerWordArray2.Length; i++)
+            {
+                answerWordArray2[i].gTab.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                answerWordArray2[i].gTab.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, 200, 204), Vector2.zero);
+                answerWordArray2[i].GetComponent<Image>().enabled = true;
+                answerWordArray2[i].gTab.SetActive(false);
+                answerWordArray2[i].deleteBtn.SetActive(false);
+            }
         }
+        
     }
     public void SendBackLetter(int index)
     {
-        char pressedLtr = answerWordArray[index].charValue;
-        Debug.Log(pressedLtr + "  ++++++");
-        answerWordArray[index].SetChar('_');
-        currentAnswerIndex--;
-        for (int i = 0; i < optionWordArray.Length; i++)
+        if(answerWord.Length <= 8)
         {
-            //Debug.Log(optionWordArray[i].GetChar() + "_____" + revealChar);
-            if (!optionWordArray[i].gameObject.activeSelf && optionWordArray[i].GetChar() == pressedLtr)
+            char pressedLtr = answerWordArray[index].charValue;
+            Debug.Log(pressedLtr + "  ++++++");
+            answerWordArray[index].SetChar('_');
+            currentAnswerIndex--;
+            for (int i = 0; i < optionWordArray.Length; i++)
             {
-                optionWordArray[i].gameObject.SetActive(true);
-                break;
-            }
+                //Debug.Log(optionWordArray[i].GetChar() + "_____" + revealChar);
+                if (!optionWordArray[i].gameObject.activeSelf && optionWordArray[i].GetChar() == pressedLtr)
+                {
+                    optionWordArray[i].gameObject.SetActive(true);
+                    break;
+                }
 
+            }
         }
+        else
+        {
+            char pressedLtr = answerWordArray2[index].charValue;
+            Debug.Log(pressedLtr + "  ++++++");
+            answerWordArray2[index].SetChar('_');
+            currentAnswerIndex--;
+            for (int i = 0; i < optionWordArray2.Length; i++)
+            {
+                //Debug.Log(optionWordArray2[i].GetChar() + "_____" + revealChar);
+                if (!optionWordArray2[i].gameObject.activeSelf && optionWordArray2[i].GetChar() == pressedLtr)
+                {
+                    optionWordArray2[i].gameObject.SetActive(true);
+                    break;
+                }
+
+            }
+        }
+        
     }    
     public void LoadNextLevel()
     {

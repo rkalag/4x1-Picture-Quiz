@@ -26,6 +26,8 @@ public class Game : MonoBehaviour
     [SerializeField] private string []textArray;
 
     [SerializeField] GameObject jokerBtn = null;
+    [SerializeField] Text jokerBtnTxt = null;
+    [SerializeField] GameObject adLoading = null;
     void Start()
     {
         if(levelInfo)
@@ -35,6 +37,7 @@ public class Game : MonoBehaviour
         levelNumber.text = DataManager.CURRENT_LEVEL.ToString();
         jsonReader = GameObject.FindGameObjectWithTag("JSONReader").GetComponent<JSONReader>();
         rt = bg.GetComponent<RectTransform>();
+        jokerBtnTxt.text = DataManager.TOTAL_JOKER + " Joker";
         StartCoroutine(jsonReader.DownloadImage());
 
 
@@ -58,6 +61,7 @@ public class Game : MonoBehaviour
     public void CallLevelCompleted()
     {
         Debug.Log("____ CallLevelCompleted");
+        PlayerData.SavePlayerData();
         levelCompleted.SetActive(true);
         var tmp = Random.Range(0, textArray.Length);
         levelCompletedTxt.text = textArray[tmp];
@@ -74,7 +78,28 @@ public class Game : MonoBehaviour
     }
     private void LevelCompletedDone()
     {
-        Debug.Log("____LevelCompletedDone");
+        Debug.Log("____LevelCompletedDone "+ DataManager.REMOVE_ADS);
+        if (DataManager.REMOVE_ADS || DataManager.BUILD_TYPE == "Unity")
+        {
+            ContinueGameAfterInterstitial();
+        }
+        else
+        {
+            Debug.Log("____DataManager.CAN_SHOW_INTERSTITIAL " + DataManager.CAN_SHOW_INTERSTITIAL);
+            if (DataManager.CAN_SHOW_INTERSTITIAL || DataManager.FIRST_TIME_AD)
+            {
+
+                adLoading.SetActive(true);
+                StartCoroutine(ShowInterstitialAd());
+                //Application.ExternalCall("ShowAd_Interstitial", "LevelClear_AD");
+            }
+            else
+                ContinueGameAfterInterstitial();
+        }
+        
+    }
+    public void ContinueGameAfterInterstitial()
+    {
         StartCoroutine(ShowLevelInfo());
     }
     private IEnumerator ShowLevelInfo()
@@ -99,6 +124,15 @@ public class Game : MonoBehaviour
     void ShakeComplete()
     {
         Invoke("Shake", Random.Range(4f, 8f));
+    }
+    IEnumerator ShowInterstitialAd()
+    {
+        yield return new WaitForSeconds(2f);
+        if (adLoading.activeSelf)
+        {
+            adLoading.SetActive(false);
+        }
+        Application.ExternalCall("ShowAd_Interstitial", "LevelClear_AD");
     }
 
 }

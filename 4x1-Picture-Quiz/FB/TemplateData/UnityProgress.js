@@ -23,23 +23,28 @@ function UnityProgress(unityInstance, progress) {
   {
     FBInstant.setLoadingProgress(progress * 100);
   }
- 
+  console.log("__________111", progress);
   if (progress == 1)
   {
+    console.log("__________111", isInstantGame);
     if(isInstantGame)
 			{
+        console.log("__________111");
         GetMobileOS();
+        console.log("__________111");
 		    MobileOrDesktop();
-        //unityInstance.SendMessage('PlayerData', 'GetPlayerData', JSON.stringify(fbPlayerData));
+        
+        unityInstance.SendMessage('PlayerData', 'GetPlayerData', JSON.stringify(fbPlayerData));
+        console.log("__________111");
 				FBInstant.startGameAsync().then(function () {
 					supportedAPIs = FBInstant.getSupportedAPIs();
-          if (supportedAPIs.includes('loadBannerAdAsync')) {
-						LoadBanner();
-					}
-					else
-					{
-						console.log("@@@@@@@@@@@@@@______NO BANNER ADS");
-					}
+          // if (supportedAPIs.includes('loadBannerAdAsync')) {
+					// 	LoadBanner();
+					// }
+					// else
+					// {
+					// 	console.log("@@@@@@@@@@@@@@______NO BANNER ADS");
+					// }
 					if (supportedAPIs.includes('getInterstitialAdAsync')) {
 						loadInterstitial();
 					}
@@ -61,7 +66,7 @@ function UnityProgress(unityInstance, progress) {
           facebookStuff.picture = FBInstant.player.getPhoto();
           unityInstance.logo.style.display = unityInstance.progress.style.display = "none";
           CheckInApp();
-          //unityInstance.SendMessage('PlayerData', 'GetMyName', facebookStuff.name);
+          unityInstance.SendMessage('PlayerData', 'GetMyName', facebookStuff.name);
 					toBase64(imgURL, function(dataUrl) {
 					  base64Picture = dataUrl;
 					});
