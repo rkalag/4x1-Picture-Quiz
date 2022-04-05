@@ -28,8 +28,13 @@ public class Game : MonoBehaviour
     [SerializeField] GameObject jokerBtn = null;
     [SerializeField] Text jokerBtnTxt = null;
     [SerializeField] GameObject adLoading = null;
+    [SerializeField] GameObject tutorial = null;
     void Start()
     {
+        if(DataManager.IS_TUTORIAL)
+        {
+            jokerBtn.SetActive(false);
+        }
         if(levelInfo)
             levelInfo.SetActive(true);
         if (levelCompleted)

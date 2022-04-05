@@ -244,8 +244,8 @@ public class QuizManager : MonoBehaviour
     }
     public void ResetLastCharacter(Button btn)
     {
-        Debug.Log("btn: " + btn);
-        Debug.Log("btn: " + btn.transform.GetChild(0).gameObject.transform.GetChild(1));
+       // Debug.Log("btn: " + btn);
+       // Debug.Log("btn: " + btn.transform.GetChild(0).gameObject.transform.GetChild(1));
         if(!btn.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.activeSelf)
         {
             Debug.Log("qqqqqqqq");
@@ -289,10 +289,11 @@ public class QuizManager : MonoBehaviour
         if (selectedCharIndex.Count > 0)
         {
             index = selectedCharIndex[selectedCharIndex.Count - 1];
-            Debug.Log("index: " + index + "____currentAnswerIndex: "+ currentAnswerIndex);
+            Debug.Log("_______________iiindeX::: " + index);
             //optionWordArray[index].emptyBox.SetActive(false);
-            if(answerWord.Length <= 8)
+            if (answerWord.Length <= 8)
             {
+                
                 optionWordArray[index].emptyBoxCG.alpha = 1;
                 optionWordArray[index].emptyBoxCG.DOFade(0, 0.3f);
             }
@@ -331,7 +332,7 @@ public class QuizManager : MonoBehaviour
     void gTabAlphaGone()
     {
         //int index = selectedCharIndex[selectedCharIndex.Count - 1];
-        Debug.Log("index: " + index + "____currentAnswerIndex: " + currentAnswerIndex);
+        //Debug.Log("index: " + index + "____currentAnswerIndex: " + currentAnswerIndex);
         if(answerWord.Length <= 8)
         {
             optionWordArray[index].emptyBoxCG.alpha = 0;
@@ -478,8 +479,8 @@ public class QuizManager : MonoBehaviour
         //    answerWordArray[currentAnswerIndex].SetChar(char.ToUpper(answerWord[currentAnswerIndex]));
         //else
         //    answerWordArray2[currentAnswerIndex].SetChar(char.ToUpper(answerWord[currentAnswerIndex]));
+        //selectedCharIndex.Add(wordData.transform.GetSiblingIndex());
         
-        selectedCharIndex.Add(answerWordArray[currentAnswerIndex].transform.GetSiblingIndex());
         revealChar = char.ToUpper(answerWord[currentAnswerIndex]);
         
         if(answerWord.Length <= 8)
@@ -489,7 +490,8 @@ public class QuizManager : MonoBehaviour
                 Debug.Log(optionWordArray[i].GetChar() + "_____" + revealChar);
                 if (optionWordArray[i].gameObject.activeSelf && optionWordArray[i].GetChar() == revealChar)
                 {
-                   // optionWordArray[i].gameObject.SetActive(false);
+                    selectedCharIndex.Add(optionWordArray[i].transform.GetSiblingIndex());
+                    // optionWordArray[i].gameObject.SetActive(false);
                     optionWordArray[i].emptyBox.SetActive(true);
                     optionWordArray[i].emptyBoxCG.alpha = 0;
                     optionWordArray[i].emptyBoxCG.DOFade(1, 0.3f);
