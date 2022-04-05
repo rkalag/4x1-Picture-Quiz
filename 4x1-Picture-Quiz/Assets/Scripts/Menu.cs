@@ -21,11 +21,12 @@ public class Menu : MonoBehaviour
     }
     public void Menu_Awake()
     {
-        Application.ExternalCall("LoadBanner");
+        //Application.ExternalCall("LoadBanner");
         Debug.Log("DataManager.CURRENT_LEVEL: " + DataManager.CURRENT_LEVEL);
        if(DataManager.CURRENT_LEVEL > 1)
         {
             titleTxt.text = "Welcome back! " + DataManager.PLAYER_NAME;
+            titleTxt.fontSize = 33;
             btnTxt.text = "Proceed with Level " + DataManager.CURRENT_LEVEL + "!";
             btnTxt.fontSize = 38;
         }

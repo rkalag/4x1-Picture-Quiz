@@ -29,11 +29,17 @@ public class Game : MonoBehaviour
     [SerializeField] Text jokerBtnTxt = null;
     [SerializeField] GameObject adLoading = null;
     [SerializeField] GameObject tutorial = null;
+
+    private QuizManager quizManager;
     void Start()
     {
         if(DataManager.IS_TUTORIAL)
         {
             jokerBtn.SetActive(false);
+        }
+        if(tutorial)
+        {
+            tutorial.SetActive(false);
         }
         if(levelInfo)
             levelInfo.SetActive(true);
@@ -60,6 +66,27 @@ public class Game : MonoBehaviour
         Debug.Log("____LevelInfoDone");
         levelInfo.SetActive(false);
         Invoke("Shake", Random.Range(4f, 8f));
+        if(DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL == 1)
+        {
+            StartCoroutine(ShowTutorial());
+        }
+    }
+    private IEnumerator ShowTutorial()
+    {
+        yield return new WaitForSeconds(0.2f);
+        tutorial.SetActive(true);
+        GameObject.FindGameObjectWithTag("QuizManager").GetComponent<QuizManager>().SetPosOfTut();
+        DataManager.IS_TUTORIAL = true;
+    }
+    public void RemoveTutorial()
+    {
+        if(tutorial.activeSelf)
+        {
+            Destroy(tutorial);
+            tutorial = null;
+            DataManager.IS_TUTORIAL = false;
+            PlayerData.SavePlayerData();
+        }
     }
 
     //Level Completed
@@ -91,7 +118,7 @@ public class Game : MonoBehaviour
         else
         {
             Debug.Log("____DataManager.CAN_SHOW_INTERSTITIAL " + DataManager.CAN_SHOW_INTERSTITIAL);
-            if (DataManager.CAN_SHOW_INTERSTITIAL || DataManager.FIRST_TIME_AD)
+            if ((DataManager.CAN_SHOW_INTERSTITIAL || DataManager.FIRST_TIME_AD) && (DataManager.CURRENT_LEVEL == 3 || DataManager.CURRENT_LEVEL % 5 == 0))
             {
 
                 adLoading.SetActive(true);
@@ -138,6 +165,10 @@ public class Game : MonoBehaviour
             adLoading.SetActive(false);
         }
         Application.ExternalCall("ShowAd_Interstitial", "LevelClear_AD");
+    }
+    public void GotJokerAfterReward()
+    {
+        DataManager.TOTAL_JOKER = DataManager.TOTAL_JOKER + 3;
     }
 
 }
