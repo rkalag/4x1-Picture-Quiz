@@ -53,6 +53,10 @@ public class Game : MonoBehaviour
         {
             tutorial.SetActive(false);
         }
+        if(tutorial)
+        {
+            tutorial.SetActive(false);
+        }
         if(levelInfo)
             levelInfo.SetActive(true);
         if (levelCompleted)
@@ -78,6 +82,7 @@ public class Game : MonoBehaviour
         Debug.Log("____LevelInfoDone");
         levelInfo.SetActive(false);
         Invoke("Shake", Random.Range(4f, 8f));
+<<<<<<< HEAD
         if(DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL == 1)
         {
             StartCoroutine(ShowTutorial());
@@ -99,6 +104,29 @@ public class Game : MonoBehaviour
             DataManager.IS_TUTORIAL = false;
             PlayerData.SavePlayerData();
         }
+=======
+        if(DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL == 1)
+        {
+            StartCoroutine(ShowTutorial());
+        }
+    }
+    private IEnumerator ShowTutorial()
+    {
+        yield return new WaitForSeconds(0.2f);
+        tutorial.SetActive(true);
+        GameObject.FindGameObjectWithTag("QuizManager").GetComponent<QuizManager>().SetPosOfTut();
+        DataManager.IS_TUTORIAL = true;
+    }
+    public void RemoveTutorial()
+    {
+        if(tutorial.activeSelf)
+        {
+            Destroy(tutorial);
+            tutorial = null;
+            DataManager.IS_TUTORIAL = false;
+            PlayerData.SavePlayerData();
+        }
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
     }
 
     //Level Completed
@@ -178,12 +206,18 @@ public class Game : MonoBehaviour
         }
         Application.ExternalCall("ShowAd_Interstitial", "LevelClear_AD");
     }
+<<<<<<< HEAD
     public void GotJokerAfterReward()
     {
         DataManager.TOTAL_JOKER = DataManager.TOTAL_JOKER + 3;
         jokerBtn.SetActive(true);
         jokerBtnTxt.text = DataManager.TOTAL_JOKER.ToString()+" Joker";
         newJokerBtn.SetActive(false);
+=======
+    public void GotJokerAfterReward()
+    {
+        DataManager.TOTAL_JOKER = DataManager.TOTAL_JOKER + 3;
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
     }
 
 }

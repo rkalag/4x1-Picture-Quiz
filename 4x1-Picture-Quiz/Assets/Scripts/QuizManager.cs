@@ -64,10 +64,17 @@ public class QuizManager : MonoBehaviour
 
     Texture2D texture;
     private int tutorialCntr = 1;
+<<<<<<< HEAD
     private char[] tutorialCharArray = {'A', 'V', 'D', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 
 
+=======
+    private char[] tutorialCharArray = {'A', 'V', 'D', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+
+
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
     private void Awake()
     {
         jsonReader = GameObject.FindGameObjectWithTag("JSONReader").GetComponent<JSONReader>();
@@ -140,6 +147,7 @@ public class QuizManager : MonoBehaviour
         }
         if(answerWord.Length <= 8)
         {
+<<<<<<< HEAD
             if(DataManager.CURRENT_LEVEL == 1 && DataManager.IS_TUTORIAL)
             {
                 for (int i = answerWord.Length; i < optionWordArray.Length; i++)
@@ -167,6 +175,35 @@ public class QuizManager : MonoBehaviour
                 {
                     optionWordArray[i].SetChar(charArray[i]);
                 }
+=======
+            if(DataManager.CURRENT_LEVEL == 1 && DataManager.IS_TUTORIAL)
+            {
+                for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+                {
+                    charArray[i] = (char)UnityEngine.Random.Range(85, 91);
+
+                }
+                charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+                for (int i = 0; i < optionWordArray.Length; i++)
+                {
+                    optionWordArray[i].SetChar(charArray[i]);
+                }
+            }
+            else
+            {
+                for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+                {
+                    charArray[i] = (char)UnityEngine.Random.Range(65, 91);
+
+                }
+                charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+                for (int i = 0; i < optionWordArray.Length; i++)
+                {
+                    optionWordArray[i].SetChar(charArray[i]);
+                }
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
             }
             
         }
@@ -191,6 +228,7 @@ public class QuizManager : MonoBehaviour
     
     public void SelectedOption(WordData wordData)
     {
+<<<<<<< HEAD
         if(DataManager.IS_TUTORIAL)
         {
             Debug.Log("wordData.charValue: " + wordData.charValue+"____"+answerWordArray);
@@ -211,6 +249,28 @@ public class QuizManager : MonoBehaviour
             {
                 return;
             }
+=======
+        if(DataManager.IS_TUTORIAL)
+        {
+            Debug.Log("wordData.charValue: " + wordData.charValue+"____"+answerWordArray);
+            if (wordData.charValue == 'C' && tutorialCntr == 1)
+                tutorialCntr++;
+            else if (wordData.charValue == 'H' && tutorialCntr == 2)
+                tutorialCntr++;
+            else if (wordData.charValue == 'E' && tutorialCntr == 3)
+                tutorialCntr++;
+            else if (wordData.charValue == 'S' && tutorialCntr == 4)
+                tutorialCntr++;
+            else if (wordData.charValue == 'T' && tutorialCntr == 5)
+            {
+                tutorialCntr++;
+                game.RemoveTutorial();
+            }
+            else
+            {
+                return;
+            }
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
         }
         if (wordData.gTab != null)
             if (wordData.gTab.activeSelf) return;
@@ -239,10 +299,17 @@ public class QuizManager : MonoBehaviour
         wordData.emptyBoxCG.alpha = 0;
         wordData.emptyBoxCG.DOFade(1, 0.3f);
         if (DataManager.IS_TUTORIAL)
+<<<<<<< HEAD
             SetPosOfTut();
         // wordData.gameObject.em
 
         //wordData.gameObject.SetActive(false);
+=======
+            SetPosOfTut();
+        // wordData.gameObject.em
+
+        //wordData.gameObject.SetActive(false);
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
         currentAnswerIndex++;
         if(answerWord.Length <= 8)
         {
@@ -519,6 +586,7 @@ public class QuizManager : MonoBehaviour
     
     public void ShowCorrectLetter()
     {
+<<<<<<< HEAD
         if (DataManager.TOTAL_JOKER < 1)
         {
             if(DataManager.BUILD_TYPE == "Facebook")
@@ -531,6 +599,20 @@ public class QuizManager : MonoBehaviour
             }
             
             return;
+=======
+        if (DataManager.TOTAL_JOKER < 1)
+        {
+            if(DataManager.BUILD_TYPE == "Facebook")
+            {
+                Application.ExternalCall("ShowAd_Reward", "GetJoker_AD");
+            }
+            else
+            {
+                game.GotJokerAfterReward();
+            }
+            
+            return;
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
         }
         char revealChar;
         if (gameStatus == GameStatus.Next || currentAnswerIndex >= answerWord.Length) return;
@@ -611,6 +693,7 @@ public class QuizManager : MonoBehaviour
             }
         }
         DataManager.TOTAL_JOKER--;
+<<<<<<< HEAD
         game.jokerBtnTxt.text = DataManager.TOTAL_JOKER.ToString()+" Joker";
         if(DataManager.TOTAL_JOKER <= 0)
         {
@@ -622,6 +705,8 @@ public class QuizManager : MonoBehaviour
             game.jokerBtn.SetActive(true);
             game.newJokerBtn.SetActive(false);
         }
+=======
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
         PlayerData.SavePlayerData();
         FindObjectOfType<SoundManager>().Play("Set");
 
@@ -829,6 +914,7 @@ public class QuizManager : MonoBehaviour
         }
             
     }
+<<<<<<< HEAD
     public void SetPosOfTut()
     {
         int j = 0;
@@ -888,6 +974,67 @@ public class QuizManager : MonoBehaviour
         
         
         
+=======
+    public void SetPosOfTut()
+    {
+        int j = 0;
+        for (int i = 0; i < optionWordArray.Length; i++)
+        {
+            if(optionWordArray[i].GetChar() == 'C' && tutorialCntr == 1)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'H' && tutorialCntr == 2)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'E' && tutorialCntr == 3)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'S' && tutorialCntr == 4)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'T' && tutorialCntr == 5)
+                j = i;
+        }
+        Debug.Log("_________JJJJJJJJJ: " + j);
+        SetPos(j);
+       
+    }
+    void SetPos(int index)
+    {
+        switch(index)
+        {
+            case 0:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-196f, 359.7f);
+                break;
+            case 1:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 359.7f);
+                break;
+            case 2:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 359.7f);
+                break;
+            case 3:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 359.7f);
+                break;
+            case 4:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(196f, 359.7f);
+                break;
+            case 5:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 261f);
+                break;
+            case 6:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 261f);
+                break;
+            case 7:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 261f);
+                break;
+        }
+
+        
+        
+        
+        
+        
+
+        
+        
+        
+>>>>>>> 339f603c6eef32e958d5974ff71c31f79bc42da5
     }
 }
 

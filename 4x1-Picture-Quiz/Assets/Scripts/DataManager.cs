@@ -9,7 +9,7 @@ public class DataManager : MonoBehaviour
 
     public static int CURRENT_LEVEL = 1;
     public static int TOTAL_LEVELS = 500;
-    public static int TOTAL_JOKER = 5;
+    public static int TOTAL_JOKER = 10;
 
     public static string ANSWER = "";
 
