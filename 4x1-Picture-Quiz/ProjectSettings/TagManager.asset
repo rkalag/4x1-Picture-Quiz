@@ -26,6 +26,7 @@ TagManager:
   - AnswerWordPrefab
   - RemoveAllBtn
   - EmptyBox
+  - OptMask
   layers:
   - Default
   - TransparentFX

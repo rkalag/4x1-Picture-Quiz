@@ -63,8 +63,10 @@ public class QuizManager : MonoBehaviour
     public float timeTaken = 0;
 
     Texture2D texture;
+    private int tutorialCntr = 1;
+    private char[] tutorialCharArray = {'A', 'V', 'D', 'F', 'G', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-    
+
 
     private void Awake()
     {
@@ -138,17 +140,35 @@ public class QuizManager : MonoBehaviour
         }
         if(answerWord.Length <= 8)
         {
-            for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+            if(DataManager.CURRENT_LEVEL == 1 && DataManager.IS_TUTORIAL)
             {
-                charArray[i] = (char)UnityEngine.Random.Range(65, 91);
+                for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+                {
+                    charArray[i] = (char)UnityEngine.Random.Range(85, 91);
 
+                }
+                charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+                for (int i = 0; i < optionWordArray.Length; i++)
+                {
+                    optionWordArray[i].SetChar(charArray[i]);
+                }
             }
-            charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
-
-            for (int i = 0; i < optionWordArray.Length; i++)
+            else
             {
-                optionWordArray[i].SetChar(charArray[i]);
+                for (int i = answerWord.Length; i < optionWordArray.Length; i++)
+                {
+                    charArray[i] = (char)UnityEngine.Random.Range(65, 91);
+
+                }
+                charArray = ShuffleList.ShuffleListItems<char>(charArray.ToList()).ToArray();
+
+                for (int i = 0; i < optionWordArray.Length; i++)
+                {
+                    optionWordArray[i].SetChar(charArray[i]);
+                }
             }
+            
         }
         else
         {
@@ -171,7 +191,27 @@ public class QuizManager : MonoBehaviour
     
     public void SelectedOption(WordData wordData)
     {
-
+        if(DataManager.IS_TUTORIAL)
+        {
+            Debug.Log("wordData.charValue: " + wordData.charValue+"____"+answerWordArray);
+            if (wordData.charValue == 'C' && tutorialCntr == 1)
+                tutorialCntr++;
+            else if (wordData.charValue == 'H' && tutorialCntr == 2)
+                tutorialCntr++;
+            else if (wordData.charValue == 'E' && tutorialCntr == 3)
+                tutorialCntr++;
+            else if (wordData.charValue == 'S' && tutorialCntr == 4)
+                tutorialCntr++;
+            else if (wordData.charValue == 'T' && tutorialCntr == 5)
+            {
+                tutorialCntr++;
+                game.RemoveTutorial();
+            }
+            else
+            {
+                return;
+            }
+        }
         if (wordData.gTab != null)
             if (wordData.gTab.activeSelf) return;
         if (wordData.emptyBox != null)
@@ -198,6 +238,8 @@ public class QuizManager : MonoBehaviour
         wordData.emptyBox.SetActive(true);
         wordData.emptyBoxCG.alpha = 0;
         wordData.emptyBoxCG.DOFade(1, 0.3f);
+        if (DataManager.IS_TUTORIAL)
+            SetPosOfTut();
         // wordData.gameObject.em
 
         //wordData.gameObject.SetActive(false);
@@ -206,15 +248,20 @@ public class QuizManager : MonoBehaviour
         {
             for (int i = 0; i < answerWordArray.Length; i++)
             {
-                if (answerWordArray[i].deleteBtn.activeSelf)
-                    answerWordArray[i].deleteBtn.SetActive(false);
+                if(!DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL != 1)
+                {
+                    if (answerWordArray[i].deleteBtn.activeSelf)
+                        answerWordArray[i].deleteBtn.SetActive(false);
+                }
+                
                 if (!answerWordArray[i].gTab.activeSelf)
                 {
                     answerWordArray[i].GetComponent<Image>().enabled = false;
                     answerWordArray[i].gTab.SetActive(true);
                     answerWordArray[i].gTabCG.alpha = 0;
                     answerWordArray[i].gTabCG.DOFade(1, 0.3f);
-                    answerWordArray[i].deleteBtn.SetActive(true);
+                    if (!DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL != 1)
+                        answerWordArray[i].deleteBtn.SetActive(true);
                     answerWordArray[i].SetChar(wordData.charValue);
                     break;
                 }
@@ -426,8 +473,8 @@ public class QuizManager : MonoBehaviour
                     }
                     removeAllBtn2.SetActive(true);
                 }
-                
-                
+
+                Application.ExternalCall("VibrateDevice", "100");
                 FindObjectOfType<SoundManager>().Play("Fail");
             }
         }
@@ -472,7 +519,19 @@ public class QuizManager : MonoBehaviour
     
     public void ShowCorrectLetter()
     {
-        if (DataManager.TOTAL_JOKER < 1) return;
+        if (DataManager.TOTAL_JOKER < 1)
+        {
+            if(DataManager.BUILD_TYPE == "Facebook")
+            {
+                Application.ExternalCall("ShowAd_Reward", "GetJoker_AD");
+            }
+            else
+            {
+                game.GotJokerAfterReward();
+            }
+            
+            return;
+        }
         char revealChar;
         if (gameStatus == GameStatus.Next || currentAnswerIndex >= answerWord.Length) return;
         //if(answerWord.Length <= 8)
@@ -551,6 +610,19 @@ public class QuizManager : MonoBehaviour
                 }
             }
         }
+        DataManager.TOTAL_JOKER--;
+        game.jokerBtnTxt.text = DataManager.TOTAL_JOKER.ToString()+" Joker";
+        if(DataManager.TOTAL_JOKER <= 0)
+        {
+            game.jokerBtn.SetActive(false);
+            game.newJokerBtn.SetActive(true);
+        }
+        else
+        {
+            game.jokerBtn.SetActive(true);
+            game.newJokerBtn.SetActive(false);
+        }
+        PlayerData.SavePlayerData();
         FindObjectOfType<SoundManager>().Play("Set");
 
         CheckAnswer();
@@ -756,6 +828,66 @@ public class QuizManager : MonoBehaviour
            // descriptionObj.SetActive(false);
         }
             
+    }
+    public void SetPosOfTut()
+    {
+        int j = 0;
+        for (int i = 0; i < optionWordArray.Length; i++)
+        {
+            if(optionWordArray[i].GetChar() == 'C' && tutorialCntr == 1)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'H' && tutorialCntr == 2)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'E' && tutorialCntr == 3)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'S' && tutorialCntr == 4)
+                j = i;
+            else if (optionWordArray[i].GetChar() == 'T' && tutorialCntr == 5)
+                j = i;
+        }
+        Debug.Log("_________JJJJJJJJJ: " + j);
+        SetPos(j);
+       
+    }
+    void SetPos(int index)
+    {
+        switch(index)
+        {
+            case 0:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-196f, 359.7f);
+                break;
+            case 1:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 359.7f);
+                break;
+            case 2:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 359.7f);
+                break;
+            case 3:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 359.7f);
+                break;
+            case 4:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(196f, 359.7f);
+                break;
+            case 5:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 261f);
+                break;
+            case 6:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 261f);
+                break;
+            case 7:
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 261f);
+                break;
+        }
+
+        
+        
+        
+        
+        
+
+        
+        
+        
     }
 }
 

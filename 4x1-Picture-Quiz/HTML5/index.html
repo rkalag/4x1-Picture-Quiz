@@ -46,11 +46,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_0 = 1;
-		fbPlayerData.isSound_0 = true;
-		fbPlayerData.removeAds_0 = false;
-		fbPlayerData.isTutorial_0 = false;
-		fbPlayerData.totalJoker_0 = 5;
+		fbPlayerData.currentLevel_3 = 1;
+		fbPlayerData.isSound_3 = true;
+		fbPlayerData.removeAds_3 = false;
+		fbPlayerData.isTutorial_3 = true;
+		fbPlayerData.totalJoker_3 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -72,29 +72,29 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_0 = parseInt(data[0]);
-			fbPlayerData.isSound_0 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_0 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_0 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_0 = parseInt(data[4]);
+			fbPlayerData.currentLevel_3 = parseInt(data[0]);
+			fbPlayerData.isSound_3 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_3 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_3 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_3 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_0 = 1;
-			fbPlayerData.isSound_0 = true;
-			fbPlayerData.removeAds_0 = false;
-			fbPlayerData.isTutorial_0 = true;
-			fbPlayerData.totalJoker_0 = 5;
+			fbPlayerData.currentLevel_3 = 1;
+			fbPlayerData.isSound_3 = true;
+			fbPlayerData.removeAds_3 = false;
+			fbPlayerData.isTutorial_3 = true;
+			fbPlayerData.totalJoker_3 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_0", "isSound_0", "removeAds_0", "isTutorial_0", "totalJoker_0"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_3", "isSound_3", "removeAds_3", "isTutorial_3", "totalJoker_3"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;
-					console.log("♥♥♥♥_____11");
+					console.log("♥♥♥♥_____♥♥11");
 				}
 				if(onlyOnce)
 				{
@@ -300,11 +300,8 @@
 			console.log("_____________", rewardType);
 			switch(rewardType)
 			{
-				case "HintUnlocked":
-					//unityInstance.SendMessage('Unlock Popup', 'UnlockHint');
-					break;
-				case "SolutionUnlocked":
-					//unityInstance.SendMessage('Unlock Popup', 'UnlockSolution');
+				case "GetJoker_AD":
+					unityInstance.SendMessage('Game', 'GotJokerAfterReward');
 					break;
 			}
 		}
