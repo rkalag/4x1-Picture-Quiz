@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static string BUILD_TYPE = "Facebook";//Facebook, Unity
+    public static string BUILD_TYPE = "Unity";//Facebook, Unity
     public static bool IS_TESTING = false;
 
     public static int CURRENT_LEVEL = 1;
     public static int TOTAL_LEVELS = 500;
-    public static int TOTAL_JOKER = 10;
+    public static int TOTAL_JOKER = 5;
 
     public static string ANSWER = "";
 
