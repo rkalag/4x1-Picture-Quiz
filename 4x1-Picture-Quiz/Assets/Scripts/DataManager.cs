@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static string BUILD_TYPE = "Unity";//Facebook, Unity
+    public static string BUILD_TYPE = "Facebook";//Facebook, Unity
     public static bool IS_TESTING = false;
 
     public static int CURRENT_LEVEL = 1;

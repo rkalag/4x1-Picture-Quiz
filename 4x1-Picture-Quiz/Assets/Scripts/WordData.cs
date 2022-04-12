@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class WordData : MonoBehaviour
 {
     [SerializeField]
-    private Text charText;
+    private TextMeshProUGUI charText;
     [HideInInspector]
     public char charValue;
     public GameObject gTab = null;
