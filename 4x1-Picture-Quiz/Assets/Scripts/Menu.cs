@@ -4,10 +4,11 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] Text titleTxt;
+    [SerializeField] TextMeshPro titleTxt;
     [SerializeField] Text btnTxt;
 
     [SerializeField] GameObject onImg;
@@ -59,7 +60,6 @@ public class Menu : MonoBehaviour
     }
     private void SetSound()
     {
-        DataManager.IS_SOUND = false;
         Debug.Log("___________Sound: " + DataManager.IS_SOUND);
         if (DataManager.IS_SOUND)
         {
