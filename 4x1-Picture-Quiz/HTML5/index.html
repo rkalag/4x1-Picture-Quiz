@@ -46,11 +46,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_5 = 1;
-		fbPlayerData.isSound_5 = true;
-		fbPlayerData.removeAds_5 = false;
-		fbPlayerData.isTutorial_5 = true;
-		fbPlayerData.totalJoker_5 = 5;
+		fbPlayerData.currentLevel_6 = 1;
+		fbPlayerData.isSound_6 = true;
+		fbPlayerData.removeAds_6 = false;
+		fbPlayerData.isTutorial_6 = true;
+		fbPlayerData.totalJoker_6 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -72,25 +72,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_5 = parseInt(data[0]);
-			fbPlayerData.isSound_5 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_5 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_5 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_5 = parseInt(data[4]);
+			fbPlayerData.currentLevel_6 = parseInt(data[0]);
+			fbPlayerData.isSound_6 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_6 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_6 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_6 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_5 = 1;
-			fbPlayerData.isSound_5 = true;
-			fbPlayerData.removeAds_5 = false;
-			fbPlayerData.isTutorial_5 = true;
-			fbPlayerData.totalJoker_5 = 5;
+			fbPlayerData.currentLevel_6 = 1;
+			fbPlayerData.isSound_6 = true;
+			fbPlayerData.removeAds_6 = false;
+			fbPlayerData.isTutorial_6 = true;
+			fbPlayerData.totalJoker_6 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_5", "isSound_5", "removeAds_5", "isTutorial_5", "totalJoker_5"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_6", "isSound_6", "removeAds_6", "isTutorial_6", "totalJoker_6"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;

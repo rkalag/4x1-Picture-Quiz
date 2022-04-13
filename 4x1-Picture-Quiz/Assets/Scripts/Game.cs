@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using TMPro;
 
 public class Game : MonoBehaviour
 {
@@ -15,19 +16,19 @@ public class Game : MonoBehaviour
     [SerializeField]
     private CanvasGroup levelNum;
 
-    [SerializeField] Text levelNumber;
+    [SerializeField] TextMeshProUGUI levelNumber;
 
     private JSONReader jsonReader;
 
     [SerializeField] private GameObject levelCompleted = null;
     [SerializeField] private GameObject levelCompletedBG = null;
     [SerializeField] private GameObject levelCompletedText = null;
-    [SerializeField] private Text levelCompletedTxt = null;
+    [SerializeField] private TextMeshProUGUI levelCompletedTxt = null;
     [SerializeField] private string []textArray;
 
     public GameObject jokerBtn = null;
     public GameObject newJokerBtn = null;
-    public Text jokerBtnTxt = null;
+    public TextMeshProUGUI jokerBtnTxt = null;
     [SerializeField] GameObject adLoading = null;
     [SerializeField] GameObject tutorial = null;
 
@@ -61,6 +62,10 @@ public class Game : MonoBehaviour
             levelInfo.SetActive(true);
         if (levelCompleted)
             levelCompleted.SetActive(false);
+        if(DataManager.CURRENT_LEVEL >= 100)
+            levelNumber.fontSize = 130;
+        else
+            levelNumber.fontSize = 180;
         levelNumber.text = DataManager.CURRENT_LEVEL.ToString();
         jsonReader = GameObject.FindGameObjectWithTag("JSONReader").GetComponent<JSONReader>();
         rt = bg.GetComponent<RectTransform>();

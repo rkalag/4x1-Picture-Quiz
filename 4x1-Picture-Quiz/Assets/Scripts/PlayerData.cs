@@ -54,11 +54,11 @@ public class PlayerData : MonoBehaviour
 
 
 
-        DataManager.CURRENT_LEVEL = playerData["currentLevel_5"];
-        DataManager.IS_SOUND = playerData["isSound_5"];
-        DataManager.REMOVE_ADS = playerData["removeAds_5"];
-        DataManager.IS_TUTORIAL = playerData["isTutorial_5"];
-        DataManager.TOTAL_JOKER = playerData["totalJoker_5"];
+        DataManager.CURRENT_LEVEL = playerData["currentLevel_6"];
+        DataManager.IS_SOUND = playerData["isSound_6"];
+        DataManager.REMOVE_ADS = playerData["removeAds_6"];
+        DataManager.IS_TUTORIAL = playerData["isTutorial_6"];
+        DataManager.TOTAL_JOKER = playerData["totalJoker_6"];
 
         Debug.Log(DataManager.CURRENT_LEVEL + "__________ RecievePlayerData22");
 

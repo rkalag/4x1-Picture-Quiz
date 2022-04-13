@@ -8,13 +8,13 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] TextMeshPro titleTxt;
-    [SerializeField] Text btnTxt;
+    [SerializeField] TextMeshProUGUI titleTxt;
+    [SerializeField] TextMeshProUGUI btnTxt;
 
     [SerializeField] GameObject onImg;
-    [SerializeField] Text onTxt;
+    [SerializeField] TextMeshProUGUI onTxt;
     [SerializeField] GameObject offImg;
-    [SerializeField] Text offTxt;
+    [SerializeField] TextMeshProUGUI offTxt;
     // Start is called before the first frame update
     private void Awake()
     {
