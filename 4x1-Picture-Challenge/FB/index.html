@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>4x1 Picture Quiz</title>
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0, maximum-scale = 1.0, minimum-scale = 1.0, user-scalable = 0, minimal-ui" />
+
+	  <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+	<script src="TemplateData/UnityProgress.js"></script>
+	<script src="https://connect.facebook.net/en_US/fbinstant.7.0.js"></script>
+	.7.0.js
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+       var isInstantGame = true;
+        var imgURL = "share.png";
+		  var base64Picture;
+		  var base64Picture2;
+		  var facebookStuff = {
+			  name: "",
+			  picture: ""
+		  }
+		  var base64ImageBackground = null;
+		  var fb_BANNER_PLACEMENT_ID = '373337044481895_373651987783734';
+		  var fb_INTERSTITIAL_PLACEMENT_ID = '373337044481895_373661287782804';
+		  var fb_REWARDAD_PLACEMENT_ID = '373337044481895_373661471116119';
+		  var fb_preloadedRewardedVideo = null;
+		  var fb_preloadedInterstitial = null;
+		  var adCntr = 0;
+		  var tmpAdCntr = 0;
+		var onlyOnce = true;
+		var unityInstance;
+		var rewardType = "";
+		var interstitialType = "";
+
+		//_______________________________________in-app
+		var purchasingSupported = false;
+		var isPurchasing = false;
+		var PURCHASE_ID = "removeAds";
+		var purchasedProducts= [];
+		var supportedAPIs;
+		//_______________________________________in-app
+
+		
+		//data saving
+		let fbPlayerData = {};
+		fbPlayerData.currentLevel_6 = 1;
+		fbPlayerData.isSound_6 = true;
+		fbPlayerData.removeAds_6 = false;
+		fbPlayerData.isTutorial_6 = true;
+		fbPlayerData.totalJoker_6 = 5;
+
+		function isEmpty(obj) {
+			for(var prop in obj) {
+				if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+				return false;
+				}
+			}
+
+			return JSON.stringify(obj) === JSON.stringify({});
+		}
+		function stringToBoolean(string)
+		{
+			switch(string.toLowerCase().trim()){
+				case "true": case "yes": case "1": return true;
+				case "false": case "no": case "0": case null: return false;
+				default: return Boolean(string);
+			}
+		}
+		function SavePlayerData(strData)
+		{
+			var data = strData.split(":");
+			fbPlayerData.currentLevel_6 = parseInt(data[0]);
+			fbPlayerData.isSound_6 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_6 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_6 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_6 = parseInt(data[4]);
+			console.log("Data has been saved successfully!", fbPlayerData);
+			FBInstant.player.setDataAsync(fbPlayerData);
+		}
+		function ClearFBData()
+		{
+			fbPlayerData.currentLevel_6 = 1;
+			fbPlayerData.isSound_6 = true;
+			fbPlayerData.removeAds_6 = false;
+			fbPlayerData.isTutorial_6 = true;
+			fbPlayerData.totalJoker_6 = 5;
+		}
+		function GetPlayerData()
+		{
+			FBInstant.player.getDataAsync(["currentLevel_6", "isSound_6", "removeAds_6", "isTutorial_6", "totalJoker_6"]).then(function(data){
+				console.log(data, "gooot data.....111");
+				if(typeof data !== "undefined" && !isEmpty(data)){
+					fbPlayerData = data;
+					console.log("♥♥♥♥_____♥♥11");
+				}
+				if(onlyOnce)
+				{
+					onlyOnce = false;
+					unityInstance = UnityLoader.instantiate("unityContainer", "Build/HTML5.json", {onProgress: UnityProgress});
+					
+				}
+				FBInstant.player.setDataAsync(fbPlayerData);
+			});
+		}
+		if(isInstantGame)
+        {
+            FBInstant.initializeAsync().then(function() {
+				console.log("____________FBInstant.initializeAsync");
+				GetPlayerData();
+               // unityInstance = UnityLoader.instantiate("unityContainer", "Build/HTML5.json", {onProgress: UnityProgress});
+                
+            });
+        }
+        else{
+			console.log("aaa");
+            unityInstance = UnityLoader.instantiate("unityContainer", "Build/HTML5.json", {onProgress: UnityProgress});
+        }
+        function checkShortcutCreation() {
+			if (!isInstantGame) return;
+
+			//console.log("Checking shortcut creation...");
+			FBInstant.canCreateShortcutAsync().then(function (canCreateShortcut) {
+				if (canCreateShortcut) {
+					//console.log("Player eligible for shortcut creation");
+					//gameData.hasCheckedShortcutAdd = true;
+					//saveGameData(gameData);
+					FBInstant.createShortcutAsync().then(function () {
+						//console.log("Shortcut created");
+					}).catch(function () {
+						//console.log("Shortcut not created");
+					});
+				} else {
+					//console.log("Player not eligible for shortcut creation");
+				}
+			}).catch(function (e) {
+				//console.log("Error obtaining shortcut creation info: " + e);
+			});
+		}
+		function ShareGame() {
+		  var shareSendData = "";
+		  console.log("Share Game");
+		  FBInstant.shareAsync({
+			intent: "INVITE",
+			image: base64Picture,
+			text: 'How good are you in solving Math?',
+			data: { shareSendData: 'Hi, check out this Math game!' },
+		  }).then(function() {
+			//console.log("Share window closed");
+			
+		  }).catch(function(e) {
+			//console.log("share: " + e.message);
+		  });
+		}
+		function ChallengeFriend(level)
+		{
+			var currentLevel = parseInt(level);
+			console.log("Challenge Friend");
+		  FBInstant.context.chooseAsync()
+			.then(function(){
+				let contextID = FBInstant.context.getID();
+				FBInstant.updateAsync({
+					action: 'CUSTOM',
+					cta: 'PLAY',
+					image: base64Picture,
+					text: {
+					  default: 'Time to Sharpen your Brain! Play "Brain Math" now.',
+					  localizations: {
+						en_US: 'Time to Sharpen your Brain! Play "Brain Math" now.',
+					  }
+					},
+					template: 'Brain Math',
+					data: { myReplayData: currentLevel },
+					strategy: 'IMMEDIATE',
+					notification: 'NO_PUSH',
+				  }).then(function() {
+				  });
+			});
+		}
+		function toBase64(url, callback) {
+			var xhr = new XMLHttpRequest();
+			xhr.onload = function () {
+				var reader = new FileReader();
+				reader.onloadend = function () {
+					callback(reader.result);
+				}
+				reader.readAsDataURL(xhr.response);
+			};
+			xhr.open('GET', url);
+			xhr.responseType = 'blob';
+			xhr.send();
+		}
+		// ----- FOR FB  AD START ------
+		function LoadBanner() {
+			FBInstant.loadBannerAdAsync(fb_BANNER_PLACEMENT_ID).then(() => {
+				console.log('success');
+				console.log("FBInstant.loadBannerAdAsync >> success");
+			});
+		}
+		function HideBanner()
+		{
+			FBInstant.hideBannerAdAsync();
+		}
+		function loadInterstitial() {
+			FBInstant.getInterstitialAdAsync(fb_INTERSTITIAL_PLACEMENT_ID,).then(function(interstitial) {
+				  fb_preloadedInterstitial = interstitial;
+				  return fb_preloadedInterstitial.loadAsync();
+				}).then(function() {
+					// showElement('btn-interstitial');
+					
+					console.log("interstitial loaded.......");
+					
+				}).catch(function(err){
+				 // //console.log('Interstitial failed to preload: ' + err.message);
+			});
+		}
+		function loadRewardVideo() {
+			FBInstant.getRewardedVideoAsync(fb_REWARDAD_PLACEMENT_ID,).then(function(rewarded){
+				fb_preloadedRewardedVideo = rewarded;
+				return fb_preloadedRewardedVideo.loadAsync();
+			}).then(function() {
+				  // showElement('btn-rewarded-video');
+				  console.log("reward loaded.......");
+			}).catch(function(err){
+				////console.log('Rewarded video failed to preload:' + err.message);
+			});
+		}
+		function ShowInterstitial() {  
+			console.log("♠♠♠♠♠♠♠♠♠ showInterstitial");
+		if(!isInstantGame) return; 
+			if(true && fb_preloadedInterstitial){
+			  fb_preloadedInterstitial.showAsync()
+			  .then(function() {
+				unityInstance.SendMessage('AdTimer', 'ResetTimerAfterInterstitial');
+				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+			  })
+			  .catch(function(e) {
+				////console.log(e.message);
+				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+                //   if (!unityInstance.isMuted)
+                //       unityInstance.AudioListener.volume = 1;
+			  });
+			  loadInterstitial();
+			} else{
+				////console.log("Ads not supported in this platform");
+				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+                // if (!unityInstance.isMuted)
+                //     unityInstance.AudioListener.volume = 1;
+			}
+		}
+		function ShowRewardedVideo() {
+			console.log("♠♠♠♠♠♠♠♠♠ showRewardedVideo");
+		  if(isInstantGame)
+		  {
+			  if(true && fb_preloadedRewardedVideo){
+				  ////console.log("-- Reward Video Playing --");
+				  fb_preloadedRewardedVideo.showAsync()
+				  .then(function() {
+					getReward_Reward(rewardType);
+				  })
+				  .catch(function(e) {
+					  
+				  });
+				  loadRewardVideo();
+			  }else{
+				  
+			  }
+		  }
+		  else
+		  {
+			getReward_Reward();
+		  }
+			
+		}
+		function ShowAd_Interstitial(type)
+		{
+			interstitialType = type;
+			ShowInterstitial();
+		}
+		function getReward_Interstitial(interstitialType)
+		{
+			// console.log("_____________", interstitialType);
+			// switch(interstitialType)
+			// {
+			// 	case "LevelClear_AD":
+			// 	case "GameClose_AD":
+			// 		unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+			// 		break;
+			// }
+		}
+		function ShowAd_Reward(type)
+		{
+			rewardType = type;
+			ShowRewardedVideo();
+		}
+		function getReward_Reward(type)
+		{
+			console.log("_____________", rewardType);
+			switch(rewardType)
+			{
+				case "GetJoker_AD":
+					unityInstance.SendMessage('Game', 'GotJokerAfterReward');
+					break;
+			}
+		}
+
+		// in-app purchase
+		// in app
+		function CheckInApp()
+		{
+			console.log(">>>>>>>>>>>>>>>>>> CheckInApp", supportedAPIs.includes("payments.purchaseAsync"));
+			if (supportedAPIs.includes("payments.purchaseAsync")){
+				purchasingSupported = true;
+				FBInstant.payments.getPurchasesAsync().then(function (purchases) {
+				console.log(">>>>>>>>>>>>>>>>>>",purchases); // [{productID: '12345', ...}, ...]
+				purchasedProducts= purchases;    
+				//setPurchasedPack()  
+				});
+			}
+			else{    
+				console.log("Purachase not supported XXXXXXXXXXXXXXX");
+				//purchasingSupported = false;
+				// setPurchasedPack();
+			}
+			console.log(purchasingSupported, "+++++++++=");
+			//getMobileOS();
+			FBInstant.payments.onReady(function() {
+				// Payments are ready
+				console.log("payment ready called")
+			});
+		}
+
+	function consumeProduct(purchase_token, product_id){
+		console.log("consumeProduct :", product_id);
+		FBInstant.payments.consumePurchaseAsync(purchase_token)
+		.then(function()
+		{
+			// Product consumed
+			console.log("Product consumed :::::: "+product_id);
+			//unityInstance.SendMessage('Menu', 'GetProductsAfterPurchase', product_id);
+		}).catch(function(e) {
+			// Error occurred
+			console.log("Error occurred while consuming the Product : "+e);
+		});
+	}
+
+	function gettingConsumedProducts(){
+		FBInstant.payments.getPurchasesAsync().then(function(purchases)
+		{
+			// purchases contains the list of unconsumed purchases
+			console.log("unconsumed purchases : "+purchases);
+		}).catch(function(error) {
+			// Error occurred
+			console.log("Error occurred while getting unconsumed purchases : "+error);
+		});
+	}
+	function buyIAP(product_id, success, failed){
+		// product_id = "10recipes"
+		//showMsg("Please wait...", 2000)  
+		console.log("purchasing product");
+		FBInstant.payments.purchaseAsync(
+		{
+			productID: product_id,
+			// developerPayload: payload,
+		}).then(success).catch(failed);       
+	}
+	function CallInAppPurchase(ids)
+	{
+		console.log("Purchase________", purchasingSupported, isPurchasing, ids )             
+		if(!purchasingSupported || isPurchasing) {
+			//showMsg("Purchase not suported!", 2000);
+			console.log("Purchase failed", !purchasingSupported, isPurchasing)       
+			if(!purchasingSupported) console.log("Purchase not suported")	
+			if(isPurchasing) console.log("Please wait..")
+			return;
+		}
+		isPurchasing = true;
+		buyIAP(ids, function(purchase){           
+			console.log("Congrats!!!, you successfully purchased!")
+			//showMsg("Congrats!!!, You successfully purchased!", 2000);
+			//unityInstance.SendMessage('Menu', 'GetProductsAfterPurchase', ids);
+			isPurchasing = false;
+			FBInstant.payments.getPurchasesAsync().then(function (purchases) {
+				for (const item of purchases)
+				{
+					
+				}
+			});
+		}, function(e){
+			//showMsg("Purchage failed!!", 2000);
+			isPurchasing = false;
+			console.log("Purchase Failed", e)	;
+		})
+	}
+
+	function VibrateDevice(n1)
+	{
+		if("vibrate" in window.navigator)
+		{
+			if (window.navigator) {
+				window.navigator.vibrate(n1);
+			}
+		}
+	}
+	function GetPlayerName()
+	{
+		facebookStuff.name = FBInstant.player.getName();
+		//unityInstance.SendMessage('PlayerData', 'GetMyName', facebookStuff.name);
+	}
+	const GetMobileOS = () => {
+		const ua = navigator.userAgent
+		if (/android/i.test(ua)) {
+			unityInstance.SendMessage('PlayerData', 'GetMobileOS', "Android");
+			return "Android"
+		}
+		else if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1))
+		{
+			unityInstance.SendMessage('PlayerData', 'GetMobileOS', "IOS");
+			return "IOS"
+		}
+		unityInstance.SendMessage('PlayerData', 'GetMobileOS', "Other");
+		return "Other"
+	}
+	function MobileOrDesktop()
+	{
+		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+		// true for mobile device
+		unityInstance.SendMessage('PlayerData', 'MobileOrDesktop', "Mobile");
+		
+		}else{
+		// false for not mobile device
+		unityInstance.SendMessage('PlayerData', 'MobileOrDesktop', "Desktop");
+		
+		}
+	}
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content" style="width: 100%; height: 100%">
+      <div id="unityContainer" style="width: 100%; height: 100%"></div>
+    </div>
+  </body>
+</html>
