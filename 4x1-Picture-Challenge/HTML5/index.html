@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 	<script src="TemplateData/UnityProgress.js"></script>
 	<script src="https://connect.facebook.net/en_US/fbinstant.7.0.js"></script>
-	.7.0.js
     <script src="Build/UnityLoader.js"></script>
     <script>
        var isInstantGame = true;
@@ -46,11 +45,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_6 = 1;
-		fbPlayerData.isSound_6 = true;
-		fbPlayerData.removeAds_6 = false;
-		fbPlayerData.isTutorial_6 = true;
-		fbPlayerData.totalJoker_6 = 5;
+		fbPlayerData.currentLevel_9 = 1;
+		fbPlayerData.isSound_9 = true;
+		fbPlayerData.removeAds_9 = true;
+		fbPlayerData.isTutorial_9 = false;
+		fbPlayerData.totalJoker_9 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -72,25 +71,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_6 = parseInt(data[0]);
-			fbPlayerData.isSound_6 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_6 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_6 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_6 = parseInt(data[4]);
+			fbPlayerData.currentLevel_9 = parseInt(data[0]);
+			fbPlayerData.isSound_9 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_9 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_9 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_9 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_6 = 1;
-			fbPlayerData.isSound_6 = true;
-			fbPlayerData.removeAds_6 = false;
-			fbPlayerData.isTutorial_6 = true;
-			fbPlayerData.totalJoker_6 = 5;
+			fbPlayerData.currentLevel_9 = 1;
+			fbPlayerData.isSound_9 = true;
+			fbPlayerData.removeAds_9 = false;
+			fbPlayerData.isTutorial_9 = true;
+			fbPlayerData.totalJoker_9 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_6", "isSound_6", "removeAds_6", "isTutorial_6", "totalJoker_6"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_9", "isSound_9", "removeAds_9", "isTutorial_9", "totalJoker_9"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;

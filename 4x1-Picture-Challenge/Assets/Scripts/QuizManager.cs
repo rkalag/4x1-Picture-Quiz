@@ -142,7 +142,7 @@ public class QuizManager : MonoBehaviour
         }
         if(answerWord.Length <= 8)
         {
-            if(DataManager.CURRENT_LEVEL == 1 && DataManager.IS_TUTORIAL)
+            if(/*DataManager.CURRENT_LEVEL == 1 &&*/ DataManager.IS_TUTORIAL)
             {
                 for (int i = answerWord.Length; i < optionWordArray.Length; i++)
                 {
@@ -248,7 +248,7 @@ public class QuizManager : MonoBehaviour
         {
             for (int i = 0; i < answerWordArray.Length; i++)
             {
-                if(!DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL != 1)
+                if(!DataManager.IS_TUTORIAL /*&& DataManager.CURRENT_LEVEL != 1*/)
                 {
                     if (answerWordArray[i].deleteBtn.activeSelf)
                         answerWordArray[i].deleteBtn.SetActive(false);
@@ -260,7 +260,7 @@ public class QuizManager : MonoBehaviour
                     answerWordArray[i].gTab.SetActive(true);
                     answerWordArray[i].gTabCG.alpha = 0;
                     answerWordArray[i].gTabCG.DOFade(1, 0.3f);
-                    if (!DataManager.IS_TUTORIAL && DataManager.CURRENT_LEVEL != 1)
+                    if (!DataManager.IS_TUTORIAL /*&& DataManager.CURRENT_LEVEL != 1*/)
                         answerWordArray[i].deleteBtn.SetActive(true);
                     answerWordArray[i].SetChar(wordData.charValue);
                     break;
@@ -616,11 +616,14 @@ public class QuizManager : MonoBehaviour
         {
             game.jokerBtn.SetActive(false);
             game.newJokerBtn.SetActive(true);
+            game.levelImg.sprite = Resources.Load("blue-circle", typeof(Sprite)) as Sprite;
+
         }
         else
         {
             game.jokerBtn.SetActive(true);
             game.newJokerBtn.SetActive(false);
+            game.levelImg.sprite = Resources.Load("orange-circle", typeof(Sprite)) as Sprite;
         }
         PlayerData.SavePlayerData();
         FindObjectOfType<SoundManager>().Play("Set");

@@ -33,6 +33,7 @@ public class Game : MonoBehaviour
     public TextMeshProUGUI jokerBtnTxt = null;
     [SerializeField] GameObject adLoading = null;
     [SerializeField] GameObject tutorial = null;
+    public Image levelImg = null;
 
     private QuizManager quizManager;
     void Start()
@@ -42,11 +43,13 @@ public class Game : MonoBehaviour
         {
             jokerBtn.SetActive(true);
             newJokerBtn.SetActive(false);
+            levelImg.sprite = Resources.Load("orange-circle", typeof(Sprite)) as Sprite;
         }
         else
         {
             jokerBtn.SetActive(false);
             newJokerBtn.SetActive(true);
+            levelImg.sprite = Resources.Load("blue-circle", typeof(Sprite)) as Sprite;
         }
         if(DataManager.IS_TUTORIAL)
         {
@@ -137,6 +140,7 @@ public class Game : MonoBehaviour
     private void LevelCompletedDone()
     {
         Debug.Log("____LevelCompletedDone "+ DataManager.REMOVE_ADS);
+        DataManager.REMOVE_ADS = true;
         if (DataManager.REMOVE_ADS || DataManager.BUILD_TYPE == "Unity")
         {
             ContinueGameAfterInterstitial();
@@ -207,6 +211,8 @@ public class Game : MonoBehaviour
         jokerBtn.SetActive(true);
         jokerBtnTxt.text = DataManager.TOTAL_JOKER.ToString() + " Joker";
         newJokerBtn.SetActive(false);
+        PlayerData.SavePlayerData();
+        levelImg.sprite = Resources.Load("orange-circle", typeof(Sprite)) as Sprite;
     }
     public void LoadMenu()
     {

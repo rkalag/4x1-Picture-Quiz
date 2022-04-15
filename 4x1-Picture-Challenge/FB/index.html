@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>4x1 Picture Quiz</title>
+    <title>4x1 Picture Challenge</title>
     <meta name = "viewport" content = "width = device-width, initial-scale = 1.0, maximum-scale = 1.0, minimum-scale = 1.0, user-scalable = 0, minimal-ui" />
 
 	  <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 	<script src="TemplateData/UnityProgress.js"></script>
 	<script src="https://connect.facebook.net/en_US/fbinstant.7.0.js"></script>
-	.7.0.js
     <script src="Build/UnityLoader.js"></script>
     <script>
        var isInstantGame = true;
@@ -46,11 +45,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_6 = 1;
-		fbPlayerData.isSound_6 = true;
-		fbPlayerData.removeAds_6 = false;
-		fbPlayerData.isTutorial_6 = true;
-		fbPlayerData.totalJoker_6 = 5;
+		fbPlayerData.currentLevel_8 = 1;
+		fbPlayerData.isSound_8 = true;
+		fbPlayerData.removeAds_8 = true;
+		fbPlayerData.isTutorial_8 = false;
+		fbPlayerData.totalJoker_8 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -72,25 +71,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_6 = parseInt(data[0]);
-			fbPlayerData.isSound_6 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_6 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_6 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_6 = parseInt(data[4]);
+			fbPlayerData.currentLevel_8 = parseInt(data[0]);
+			fbPlayerData.isSound_8 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_8 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_8 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_8 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_6 = 1;
-			fbPlayerData.isSound_6 = true;
-			fbPlayerData.removeAds_6 = false;
-			fbPlayerData.isTutorial_6 = true;
-			fbPlayerData.totalJoker_6 = 5;
+			fbPlayerData.currentLevel_8 = 1;
+			fbPlayerData.isSound_8 = true;
+			fbPlayerData.removeAds_8 = false;
+			fbPlayerData.isTutorial_8 = true;
+			fbPlayerData.totalJoker_8 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_6", "isSound_6", "removeAds_6", "isTutorial_6", "totalJoker_6"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_8", "isSound_8", "removeAds_8", "isTutorial_8", "totalJoker_8"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;
