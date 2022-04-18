@@ -38,16 +38,16 @@ function UnityProgress(unityInstance, progress) {
         console.log("__________111");
 				FBInstant.startGameAsync().then(function () {
 					supportedAPIs = FBInstant.getSupportedAPIs();
-          if (supportedAPIs.includes('loadBannerAdAsync')) {
-            setTimeout(() => {
-              LoadBanner();
-            }, 2000);
+          // if (supportedAPIs.includes('loadBannerAdAsync')) {
+          //   setTimeout(() => {
+          //     LoadBanner();
+          //   }, 2000);
 						
-					}
-					else
-					{
-						console.log("@@@@@@@@@@@@@@______NO BANNER ADS");
-					}
+					// }
+					// else
+					// {
+					// 	console.log("@@@@@@@@@@@@@@______NO BANNER ADS");
+					// }
 					if (supportedAPIs.includes('getInterstitialAdAsync')) {
 						loadInterstitial();
 					}

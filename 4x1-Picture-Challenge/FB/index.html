@@ -45,11 +45,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_8 = 1;
-		fbPlayerData.isSound_8 = true;
-		fbPlayerData.removeAds_8 = true;
-		fbPlayerData.isTutorial_8 = false;
-		fbPlayerData.totalJoker_8 = 5;
+		fbPlayerData.currentLevel_11 = 1;
+		fbPlayerData.isSound_11 = true;
+		fbPlayerData.removeAds_11 = false;
+		fbPlayerData.isTutorial_11 = true;
+		fbPlayerData.totalJoker_11 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -71,25 +71,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_8 = parseInt(data[0]);
-			fbPlayerData.isSound_8 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_8 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_8 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_8 = parseInt(data[4]);
+			fbPlayerData.currentLevel_11 = parseInt(data[0]);
+			fbPlayerData.isSound_11 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_11 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_11 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_11 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_8 = 1;
-			fbPlayerData.isSound_8 = true;
-			fbPlayerData.removeAds_8 = false;
-			fbPlayerData.isTutorial_8 = true;
-			fbPlayerData.totalJoker_8 = 5;
+			fbPlayerData.currentLevel_11 = 1;
+			fbPlayerData.isSound_11 = true;
+			fbPlayerData.removeAds_11 = false;
+			fbPlayerData.isTutorial_11 = true;
+			fbPlayerData.totalJoker_11 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_8", "isSound_8", "removeAds_8", "isTutorial_8", "totalJoker_8"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_11", "isSound_11", "removeAds_11", "isTutorial_11", "totalJoker_11"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;

@@ -855,33 +855,46 @@ public class QuizManager : MonoBehaviour
     }
     void SetPos(int index)
     {
+        Debug.Log("_________index: " + index);
         switch (index)
         {
             case 0:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-196f, 359.7f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(-178f, 354f);
                 break;
             case 1:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 359.7f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(-79f, 354f);
                 break;
             case 2:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 359.7f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(19f, 354f);
                 break;
             case 3:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 359.7f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(116f, 354f);
                 break;
             case 4:
-                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(196f, 359.7f);
+                GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(196f, 359.7f);                
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(216f, 354f);
                 break;
             case 5:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(-98.2f, 261f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(-78f, 253f);
                 break;
             case 6:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 261f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(19f, 253f);
                 break;
             case 7:
                 GameObject.FindGameObjectWithTag("OptMask").GetComponent<RectTransform>().anchoredPosition = new Vector2(98.2f, 261f);
+                GameObject.FindGameObjectWithTag("HandPointer").GetComponent<RectTransform>().anchoredPosition = new Vector2(116f, 253f);
                 break;
         }
+        //if(index == 4)
+        //    GameObject.FindGameObjectWithTag("HP-1").GetComponent<SpriteRenderer>().flipX = true;
+        //else
+        //    GameObject.FindGameObjectWithTag("HP-1").GetComponent<SpriteRenderer>().flipX = false;
     }
 }
 

@@ -104,6 +104,7 @@ public class Game : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         tutorial.SetActive(true);
         GameObject.FindGameObjectWithTag("QuizManager").GetComponent<QuizManager>().SetPosOfTut();
+        
         DataManager.IS_TUTORIAL = true;
     }
     public void RemoveTutorial()
@@ -140,7 +141,6 @@ public class Game : MonoBehaviour
     private void LevelCompletedDone()
     {
         Debug.Log("____LevelCompletedDone "+ DataManager.REMOVE_ADS);
-        DataManager.REMOVE_ADS = true;
         if (DataManager.REMOVE_ADS || DataManager.BUILD_TYPE == "Unity")
         {
             ContinueGameAfterInterstitial();
