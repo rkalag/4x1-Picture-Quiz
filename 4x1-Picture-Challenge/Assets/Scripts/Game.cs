@@ -8,6 +8,7 @@ using TMPro;
 
 public class Game : MonoBehaviour
 {
+    public static Game instance;
     [SerializeField]
     private GameObject bg;
     private RectTransform rt;
@@ -36,6 +37,21 @@ public class Game : MonoBehaviour
     public Image levelImg = null;
 
     private QuizManager quizManager;
+
+    //Screenshot
+    public GameObject obj;
+    public Camera cam;
+    public Canvas canvas;
+    public GameObject guessTheWordObj;
+    public GameObject topLvl;
+    public GameObject askYourFriend;
+
+    private void Awake()
+    {
+        instance = this;
+        guessTheWordObj.SetActive(false);
+    }
+
     void Start()
     {
         levelNumberTxt_Top.text = DataManager.CURRENT_LEVEL.ToString();
@@ -53,6 +69,7 @@ public class Game : MonoBehaviour
         }
         if(DataManager.IS_TUTORIAL)
         {
+            askYourFriend.SetActive(false);
             jokerBtn.SetActive(false);
             newJokerBtn.SetActive(false);
             backBtn.SetActive(false);
@@ -219,7 +236,8 @@ public class Game : MonoBehaviour
         if (DataManager.IS_TUTORIAL) return;
         Initiate.Fade("Menu", Color.black, 2f);
     }
-
-
-
+    public void TakeScreenshot()
+    {
+        ScreenshotHandler.TakeScreenshot_Static(300, 534);
+    }
 }

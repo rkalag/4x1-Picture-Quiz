@@ -13,6 +13,7 @@
 	<script src="https://connect.facebook.net/en_US/fbinstant.7.0.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
+		var tournamentStarted = false;
        var isInstantGame = true;
         var imgURL = "share.png";
 		  var base64Picture;
@@ -144,8 +145,23 @@
 		  FBInstant.shareAsync({
 			intent: "INVITE",
 			image: base64Picture,
-			text: 'How good are you in solving Math?',
-			data: { shareSendData: 'Hi, check out this Math game!' },
+			text: 'How good are you in solving Puzzle?',
+			data: { shareSendData: 'Hi, check out this Puzzle Game!' },
+		  }).then(function() {
+			//console.log("Share window closed");
+			
+		  }).catch(function(e) {
+			//console.log("share: " + e.message);
+		  });
+		}
+		function AskFriends(base64Img) {
+		  var shareSendData = "";
+		  console.log("Share Game");
+		  FBInstant.shareAsync({
+			intent: "INVITE",
+			image: base64Img,
+			text: 'How good are you in solving Puzzle?',
+			data: { shareSendData: 'Hi, check out this Puzzle Game!' },
 		  }).then(function() {
 			//console.log("Share window closed");
 			
@@ -165,12 +181,12 @@
 					cta: 'PLAY',
 					image: base64Picture,
 					text: {
-					  default: 'Time to Sharpen your Brain! Play "Brain Math" now.',
+					  default: 'Time to Sharpen your Brain! Play "4x1 Picture Challenge" now.',
 					  localizations: {
-						en_US: 'Time to Sharpen your Brain! Play "Brain Math" now.',
+						en_US: 'Time to Sharpen your Brain! Play "4x1 Picture Challenge" now.',
 					  }
 					},
-					template: 'Brain Math',
+					template: '4x1 Picture Challenge',
 					data: { myReplayData: currentLevel },
 					strategy: 'IMMEDIATE',
 					notification: 'NO_PUSH',
@@ -432,6 +448,33 @@
 		// false for not mobile device
 		unityInstance.SendMessage('PlayerData', 'MobileOrDesktop', "Desktop");
 		
+		}
+	}
+	function createTournament()
+	{
+		if(tournamentStarted)
+		{
+			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_11)
+			.then(() => {
+				// show popup
+			});
+		}
+		else
+		{
+			FBInstant.tournament.createAsync({
+				initialScore: fbPlayerData.currentLevel_11,
+				data: { tournamentLevel: 'hard' },
+				config: {
+				title: '4x1 Picture Challenge',
+				image: base64Picture,
+				sortOrder: 'HIGHER_IS_BETTER',
+				scoreFormat: 'NUMERIC'
+				},
+			})
+			.then(function() {
+				// user successfully created tournament and switch into tournament context
+				tournamentStarted = true;
+			});
 		}
 	}
     </script>

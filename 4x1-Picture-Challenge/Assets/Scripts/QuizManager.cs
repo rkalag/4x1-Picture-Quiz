@@ -9,7 +9,7 @@ public class QuizManager : MonoBehaviour
 {
     public static QuizManager instance;
 
-    [SerializeField] GameObject answerWordArrayObj, answerWordArray2Obj, optionWordArrayObj, optionWordArray2Obj;
+    public GameObject answerWordArrayObj, answerWordArray2Obj, optionWordArrayObj, optionWordArray2Obj;
 
     [SerializeField]
     private WordData[] answerWordArray;
@@ -47,7 +47,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField]
     private Sprite sp = null;
 
-    private string answerWord;
+    public string answerWord;
     // Start is called before the first frame update
 
    

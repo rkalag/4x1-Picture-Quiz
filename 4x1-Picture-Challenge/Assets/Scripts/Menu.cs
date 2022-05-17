@@ -5,6 +5,8 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
+using UnityEditor;
 
 public class Menu : MonoBehaviour
 {
@@ -92,5 +94,9 @@ public class Menu : MonoBehaviour
     public void LoadGame()
     {
         Initiate.Fade("Game", Color.black, 2f);
+    }
+    public void ShareGame()
+    {
+        Application.ExternalCall("ShareGame");
     }
 }
