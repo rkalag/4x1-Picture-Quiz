@@ -238,6 +238,6 @@ public class Game : MonoBehaviour
     }
     public void TakeScreenshot()
     {
-        ScreenshotHandler.TakeScreenshot_Static(300, 534);
+        ScreenshotHandler.TakeScreenshot_Static(400, 640);
     }
 }

@@ -13,6 +13,7 @@
 	<script src="https://connect.facebook.net/en_US/fbinstant.7.0.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
+		 
 		var tournamentStarted = false;
        var isInstantGame = true;
         var imgURL = "share.png";
@@ -46,11 +47,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_11 = 1;
-		fbPlayerData.isSound_11 = true;
-		fbPlayerData.removeAds_11 = false;
-		fbPlayerData.isTutorial_11 = true;
-		fbPlayerData.totalJoker_11 = 5;
+		fbPlayerData.currentLevel_13 = 1;
+		fbPlayerData.isSound_13 = true;
+		fbPlayerData.removeAds_13 = false;
+		fbPlayerData.isTutorial_13 = true;
+		fbPlayerData.totalJoker_13 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -72,25 +73,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_11 = parseInt(data[0]);
-			fbPlayerData.isSound_11 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_11 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_11 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_11 = parseInt(data[4]);
+			fbPlayerData.currentLevel_13 = parseInt(data[0]);
+			fbPlayerData.isSound_13 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_13 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_13 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_13 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_11 = 1;
-			fbPlayerData.isSound_11 = true;
-			fbPlayerData.removeAds_11 = false;
-			fbPlayerData.isTutorial_11 = true;
-			fbPlayerData.totalJoker_11 = 5;
+			fbPlayerData.currentLevel_13 = 1;
+			fbPlayerData.isSound_13 = true;
+			fbPlayerData.removeAds_13 = false;
+			fbPlayerData.isTutorial_13 = true;
+			fbPlayerData.totalJoker_13 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_11", "isSound_11", "removeAds_11", "isTutorial_11", "totalJoker_11"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_13", "isSound_13", "removeAds_13", "isTutorial_13", "totalJoker_13"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;
@@ -140,6 +141,7 @@
 			});
 		}
 		function ShareGame() {
+			console.log("base64Picture:  ", base64Picture);
 		  var shareSendData = "";
 		  console.log("Share Game");
 		  FBInstant.shareAsync({
@@ -155,10 +157,12 @@
 		  });
 		}
 		function AskFriends(base64Img) {
+			base64Img = "data:image/png;base64,"+base64Img;
+			console.log("base64Img:  ", base64Img);
 		  var shareSendData = "";
 		  console.log("Share Game");
 		  FBInstant.shareAsync({
-			intent: "INVITE",
+			intent: "SHARE",
 			image: base64Img,
 			text: 'How good are you in solving Puzzle?',
 			data: { shareSendData: 'Hi, check out this Puzzle Game!' },
@@ -250,10 +254,12 @@
 			  .then(function() {
 				unityInstance.SendMessage('AdTimer', 'ResetTimerAfterInterstitial');
 				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+				//createTournament();
 			  })
 			  .catch(function(e) {
 				////console.log(e.message);
 				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+				//createTournament();
                 //   if (!unityInstance.isMuted)
                 //       unityInstance.AudioListener.volume = 1;
 			  });
@@ -261,6 +267,7 @@
 			} else{
 				////console.log("Ads not supported in this platform");
 				unityInstance.SendMessage('Game', 'ContinueGameAfterInterstitial');
+				//createTournament();
                 // if (!unityInstance.isMuted)
                 //     unityInstance.AudioListener.volume = 1;
 			}
@@ -454,7 +461,7 @@
 	{
 		if(tournamentStarted)
 		{
-			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_11)
+			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_13)
 			.then(() => {
 				// show popup
 			});
@@ -462,7 +469,7 @@
 		else
 		{
 			FBInstant.tournament.createAsync({
-				initialScore: fbPlayerData.currentLevel_11,
+				initialScore: fbPlayerData.currentLevel_13,
 				data: { tournamentLevel: 'hard' },
 				config: {
 				title: '4x1 Picture Challenge',

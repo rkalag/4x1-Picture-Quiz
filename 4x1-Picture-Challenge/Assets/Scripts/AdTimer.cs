@@ -3,7 +3,7 @@ using UnityEngine;
 public class AdTimer : MonoBehaviour
 {
 
-    public static float interstitialCntr = 100;
+    public static float interstitialCntr = DataManager.AD_COUNTER;
     private bool timerIsActive = false;
 
     void Awake()
@@ -12,6 +12,7 @@ public class AdTimer : MonoBehaviour
         if (n != 1)
         {
             Destroy(this.gameObject);
+            
         }
         // if more then once is in the scene
         //destroy ourselves
@@ -47,7 +48,7 @@ public class AdTimer : MonoBehaviour
     public void ResetTimerAfterInterstitial()
     {
         DataManager.FIRST_TIME_AD = false;
-        interstitialCntr = 100;
+        interstitialCntr = DataManager.AD_COUNTER;
         timerIsActive = true;
         DataManager.CAN_SHOW_INTERSTITIAL = false;
     }

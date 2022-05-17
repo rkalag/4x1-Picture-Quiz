@@ -78,6 +78,11 @@ function UnityProgress(unityInstance, progress) {
 					  base64Picture2 = dataUrl;
 					});
 					checkShortcutCreation();
+          FBInstant.getTournamentAsync()
+						.then(function(tournament) {
+							console.log("tournament.getID: "+tournament.getID());
+							tournamentStarted = true;
+						});
 				});
 			}
 			else{

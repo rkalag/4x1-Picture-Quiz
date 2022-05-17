@@ -21,12 +21,12 @@ public class ScreenshotHandler : MonoBehaviour
             takeScreenshotOnNextFrame = false;
             RenderTexture renderTexture = myCamera.targetTexture;
 
-            Texture2D renderResult = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
-            Rect rect = new Rect(0, 0, renderTexture.width, renderTexture.height);
+            Texture2D renderResult = new Texture2D(renderTexture.width, renderTexture.height-100, TextureFormat.ARGB32, false);
+            Rect rect = new Rect(0, 0, renderTexture.width, renderTexture.height-100);
             renderResult.ReadPixels(rect, 0, 0);
 
             byte[] byteArray = renderResult.EncodeToPNG();
-            System.IO.File.WriteAllBytes(Application.dataPath + "/Screenshot.png", byteArray);
+            //System.IO.File.WriteAllBytes(Application.dataPath + "/Screenshot.png", byteArray);
             Debug.Log("________ Saved Screenshot");
 
             Texture2DToBase64(byteArray);

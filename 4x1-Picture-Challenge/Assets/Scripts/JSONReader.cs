@@ -43,7 +43,7 @@ public class JSONReader : MonoBehaviour
         {
 
             yield return webData.SendWebRequest();
-            if (webData.result == UnityWebRequest.Result.ConnectionError)
+            if (webData.isNetworkError)
             {
                 Debug.Log("Oops something went wrong." + webData.error);
             }
@@ -74,7 +74,7 @@ public class JSONReader : MonoBehaviour
              Debug.Log("tempURL: " + tempURL);
             UnityWebRequest request = UnityWebRequestTexture.GetTexture(tempURL);
             yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.ConnectionError)
+            if (request.isNetworkError)
             {
                 Debug.Log(request.error);
             }
