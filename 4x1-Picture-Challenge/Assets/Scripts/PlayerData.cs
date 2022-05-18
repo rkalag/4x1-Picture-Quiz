@@ -17,11 +17,11 @@ public class PlayerData : MonoBehaviour
     {
 
 
-//#if UNITY_EDITOR
-//        Debug.unityLogger.logEnabled = true;
-//#else
-//  Debug.unityLogger.logEnabled = false;
-//#endif
+#if UNITY_EDITOR
+        Debug.unityLogger.logEnabled = true;
+#else
+  Debug.unityLogger.logEnabled = false;
+#endif
 
 
         Debug.Log("______Player Data Awake");
@@ -54,11 +54,11 @@ public class PlayerData : MonoBehaviour
 
 
 
-        DataManager.CURRENT_LEVEL = playerData["currentLevel_13"];
-        DataManager.IS_SOUND = playerData["isSound_13"];
-        DataManager.REMOVE_ADS = playerData["removeAds_13"];
-        DataManager.IS_TUTORIAL = playerData["isTutorial_13"];
-        DataManager.TOTAL_JOKER = playerData["totalJoker_13"];
+        DataManager.CURRENT_LEVEL = playerData["currentLevel_15"];
+        DataManager.IS_SOUND = playerData["isSound_15"];
+        DataManager.REMOVE_ADS = playerData["removeAds_15"];
+        DataManager.IS_TUTORIAL = playerData["isTutorial_15"];
+        DataManager.TOTAL_JOKER = playerData["totalJoker_15"];
 
         Debug.Log(DataManager.CURRENT_LEVEL + "__________ RecievePlayerData22");
 

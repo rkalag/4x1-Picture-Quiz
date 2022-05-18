@@ -47,11 +47,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_13 = 1;
-		fbPlayerData.isSound_13 = true;
-		fbPlayerData.removeAds_13 = false;
-		fbPlayerData.isTutorial_13 = true;
-		fbPlayerData.totalJoker_13 = 5;
+		fbPlayerData.currentLevel_15 = 1;
+		fbPlayerData.isSound_15 = true;
+		fbPlayerData.removeAds_15 = false;
+		fbPlayerData.isTutorial_15 = true;
+		fbPlayerData.totalJoker_15 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -73,25 +73,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_13 = parseInt(data[0]);
-			fbPlayerData.isSound_13 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_13 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_13 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_13 = parseInt(data[4]);
+			fbPlayerData.currentLevel_15 = parseInt(data[0]);
+			fbPlayerData.isSound_15 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_15 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_15 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_15 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_13 = 1;
-			fbPlayerData.isSound_13 = true;
-			fbPlayerData.removeAds_13 = false;
-			fbPlayerData.isTutorial_13 = true;
-			fbPlayerData.totalJoker_13 = 5;
+			fbPlayerData.currentLevel_15 = 1;
+			fbPlayerData.isSound_15 = true;
+			fbPlayerData.removeAds_15 = false;
+			fbPlayerData.isTutorial_15 = true;
+			fbPlayerData.totalJoker_15 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_13", "isSound_13", "removeAds_13", "isTutorial_13", "totalJoker_13"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_15", "isSound_15", "removeAds_15", "isTutorial_15", "totalJoker_15"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;
@@ -162,7 +162,7 @@
 		  var shareSendData = "";
 		  console.log("Share Game");
 		  FBInstant.shareAsync({
-			intent: "SHARE",
+			intent: "INVITE",
 			image: base64Img,
 			text: 'How good are you in solving Puzzle?',
 			data: { shareSendData: 'Hi, check out this Puzzle Game!' },
@@ -461,7 +461,7 @@
 	{
 		if(tournamentStarted)
 		{
-			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_13)
+			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_15)
 			.then(() => {
 				// show popup
 			});
@@ -469,7 +469,7 @@
 		else
 		{
 			FBInstant.tournament.createAsync({
-				initialScore: fbPlayerData.currentLevel_13,
+				initialScore: fbPlayerData.currentLevel_15,
 				data: { tournamentLevel: 'hard' },
 				config: {
 				title: '4x1 Picture Challenge',

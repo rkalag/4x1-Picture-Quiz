@@ -47,11 +47,11 @@
 		
 		//data saving
 		let fbPlayerData = {};
-		fbPlayerData.currentLevel_13 = 1;
-		fbPlayerData.isSound_13 = true;
-		fbPlayerData.removeAds_13 = false;
-		fbPlayerData.isTutorial_13 = true;
-		fbPlayerData.totalJoker_13 = 5;
+		fbPlayerData.currentLevel_14 = 1;
+		fbPlayerData.isSound_14 = true;
+		fbPlayerData.removeAds_14 = false;
+		fbPlayerData.isTutorial_14 = true;
+		fbPlayerData.totalJoker_14 = 5;
 
 		function isEmpty(obj) {
 			for(var prop in obj) {
@@ -73,25 +73,25 @@
 		function SavePlayerData(strData)
 		{
 			var data = strData.split(":");
-			fbPlayerData.currentLevel_13 = parseInt(data[0]);
-			fbPlayerData.isSound_13 = stringToBoolean(data[1]);
-			fbPlayerData.removeAds_13 = stringToBoolean(data[2]);
-			fbPlayerData.isTutorial_13 = stringToBoolean(data[3]);
-			fbPlayerData.totalJoker_13 = parseInt(data[4]);
+			fbPlayerData.currentLevel_14 = parseInt(data[0]);
+			fbPlayerData.isSound_14 = stringToBoolean(data[1]);
+			fbPlayerData.removeAds_14 = stringToBoolean(data[2]);
+			fbPlayerData.isTutorial_14 = stringToBoolean(data[3]);
+			fbPlayerData.totalJoker_14 = parseInt(data[4]);
 			console.log("Data has been saved successfully!", fbPlayerData);
 			FBInstant.player.setDataAsync(fbPlayerData);
 		}
 		function ClearFBData()
 		{
-			fbPlayerData.currentLevel_13 = 1;
-			fbPlayerData.isSound_13 = true;
-			fbPlayerData.removeAds_13 = false;
-			fbPlayerData.isTutorial_13 = true;
-			fbPlayerData.totalJoker_13 = 5;
+			fbPlayerData.currentLevel_14 = 1;
+			fbPlayerData.isSound_14 = true;
+			fbPlayerData.removeAds_14 = false;
+			fbPlayerData.isTutorial_14 = true;
+			fbPlayerData.totalJoker_14 = 5;
 		}
 		function GetPlayerData()
 		{
-			FBInstant.player.getDataAsync(["currentLevel_13", "isSound_13", "removeAds_13", "isTutorial_13", "totalJoker_13"]).then(function(data){
+			FBInstant.player.getDataAsync(["currentLevel_14", "isSound_14", "removeAds_14", "isTutorial_14", "totalJoker_14"]).then(function(data){
 				console.log(data, "gooot data.....111");
 				if(typeof data !== "undefined" && !isEmpty(data)){
 					fbPlayerData = data;
@@ -461,7 +461,7 @@
 	{
 		if(tournamentStarted)
 		{
-			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_13)
+			FBInstant.postSessionScoreAsync(fbPlayerData.currentLevel_14)
 			.then(() => {
 				// show popup
 			});
@@ -469,7 +469,7 @@
 		else
 		{
 			FBInstant.tournament.createAsync({
-				initialScore: fbPlayerData.currentLevel_13,
+				initialScore: fbPlayerData.currentLevel_14,
 				data: { tournamentLevel: 'hard' },
 				config: {
 				title: '4x1 Picture Challenge',
